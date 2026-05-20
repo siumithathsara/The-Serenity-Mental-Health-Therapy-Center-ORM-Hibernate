@@ -144,4 +144,17 @@ public class TherapistDAOImpl implements TherapistDAO {
         }
         return "T001";
     }
+
+    @Override
+    public List<Therapist> getAllTherapists(String programValue, Session session) throws Exception {
+        if (programValue == null || programValue.isBlank()) {
+
+            return session.createQuery("FROM Therapist", Therapist.class).list();
+        } else {
+
+            return session.createQuery("FROM Therapist WHERE specialization = :progVal AND status = 'Active'", Therapist.class)
+                    .setParameter("progVal", programValue)
+                    .list();
+        }
+    }
 }

@@ -63,40 +63,38 @@ public class TherapistServiceImpl implements TherapistService {
     }
 
     @Override
-    public List<TherapistDTO> getAllTherapists(String programId) throws Exception {
+    public List<TherapistDTO> getAllTherapists(String programValue) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
 
-        List<Therapist> therapistList;
+        try {
+
+            List<Therapist> therapistList = therapistDAO.getAllTherapists(programValue, session);
+
+            transaction.commit();
 
 
-        if (programId == null || programId.isBlank()) {
+            List<TherapistDTO> dtoList = new ArrayList<>();
+            for (Therapist therapist : therapistList) {
+                dtoList.add(new TherapistDTO(
+                        therapist.getId(),
+                        therapist.getName(),
+                        therapist.getSpecialization(),
+                        therapist.getStatus(),
+                        therapist.getPhone(),
+                        therapist.getEmail(),
+                        therapist.getWorkingDays()
+                ));
+            }
+            return dtoList;
 
-            therapistList = session.createQuery("FROM Therapist", Therapist.class).list();
-        } else {
-
-            therapistList = session.createQuery("FROM Therapist WHERE specialization = :progId", Therapist.class)
-                    .setParameter("progId", programId)
-                    .list();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+            throw e;
+        } finally {
+            session.close();
         }
-
-        transaction.commit();
-        session.close();
-
-        List<TherapistDTO> dtoList = new ArrayList<>();
-        for (Therapist therapist : therapistList) {
-            dtoList.add(new TherapistDTO(
-                    therapist.getId(),
-                    therapist.getName(),
-                    therapist.getSpecialization(),
-                    therapist.getStatus(),
-                    therapist.getPhone(),
-                    therapist.getEmail(),
-                    therapist.getWorkingDays()
-            ));
-        }
-
-        return dtoList;
     }
 
     @Override

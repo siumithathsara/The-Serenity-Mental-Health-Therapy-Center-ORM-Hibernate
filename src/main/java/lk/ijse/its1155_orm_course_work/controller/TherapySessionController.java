@@ -174,12 +174,12 @@ public class TherapySessionController implements Initializable {
                 return;
             }
 
-            String programId = selectedProgram.split(" - ")[0].trim();
+            String programName = selectedProgram.split(" - ")[1].trim();
 
-            List<TherapistDTO> therapistDTOS = therapistService.getAllTherapists(programId);
+            List<TherapistDTO> therapistDTOS = therapistService.getAllTherapists(programName);
 
             if (therapistDTOS == null || therapistDTOS.isEmpty()) {
-                new Alert(Alert.AlertType.INFORMATION, "No therapists assigned for this program!").show();
+                new Alert(Alert.AlertType.INFORMATION, "No active therapists assigned for this program!").show();
                 return;
             }
 
