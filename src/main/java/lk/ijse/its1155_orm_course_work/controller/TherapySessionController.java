@@ -25,6 +25,7 @@ public class TherapySessionController implements Initializable {
     private final TherapistService therapistService = (TherapistService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPIST);
     private final TherapyProgramingService programService = (TherapyProgramingService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_PROGRAM);
 
+
     @FXML
     private Button btnBook;
 
