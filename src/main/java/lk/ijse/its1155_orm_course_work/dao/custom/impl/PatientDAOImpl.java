@@ -3,6 +3,7 @@ package lk.ijse.its1155_orm_course_work.dao.custom.impl;
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.custom.PatientDAO;
 import lk.ijse.its1155_orm_course_work.entity.Patient;
+import lk.ijse.its1155_orm_course_work.entity.TherapySession;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -164,5 +165,27 @@ public class PatientDAOImpl implements PatientDAO {
         }
 
         return "P001";
+    }
+
+    public Patient getPatientByName(String name, Session session) {
+        String hql = "FROM Patient p WHERE LOWER(TRIM(p.name)) LIKE LOWER(TRIM(:name))";
+        List<Patient> list = session.createQuery(hql, Patient.class)
+                .setParameter("name", name)
+                .getResultList();
+
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+
+    public List<TherapySession> getPatientTreatmentHistory(String patientId, Session session) {
+        String hql = "FROM TherapySession s " +
+                "JOIN FETCH s.program pr " +
+                "JOIN FETCH s.therapist t " +
+                "WHERE s.patient.id = :patientId " +
+                "ORDER BY s.sessionDate DESC";
+
+        return session.createQuery(hql, TherapySession.class)
+                .setParameter("patientId", patientId)
+                .getResultList();
     }
 }

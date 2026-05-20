@@ -5,13 +5,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lk.ijse.its1155_orm_course_work.dto.PatientDTO;
+import lk.ijse.its1155_orm_course_work.dto.tm.PatientHistoryTM;
+import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PatientService;
 
@@ -310,5 +317,57 @@ public class PatientManagementController implements Initializable {
             }
         }
     }
+
+    @FXML
+    void handleSearchByName(ActionEvent event) {
+        String searchText = txtSearch.getText().trim();
+
+        if (searchText.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please Enter patient Name.").show();
+            return;
+        }
+
+        try {
+
+            Patient patient = patientService.searchPatientByName(searchText);
+
+            if (patient == null) {
+                new Alert(Alert.AlertType.ERROR, "මෙම නමින් රෝගියෙකු පද්ධතියේ සොයාගත නොහැක!").show();
+                return;
+            }
+
+
+            List<PatientHistoryTM> historyList = patientService.getPatientHistory(patient.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PatientPopUp.fxml"));
+            Parent root = loader.load();
+
+            PatientPopUpController popUpController = loader.getController();
+
+
+            popUpController.setPatientData(
+                    patient.getName(),
+                    patient.getNic(),
+                    patient.getPhone(),
+                    historyList
+            );
+
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Patient Treatment History - " + patient.getName());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.show();
+
+            txtSearch.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "රෝගී දත්ත ලෝඩ් කිරීමේදී දෝෂයක් සිදු විය!").show();
+        }
+    }
+
+
 
 }

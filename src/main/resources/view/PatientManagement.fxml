@@ -103,7 +103,7 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <children>
-                                <TextField fx:id="txtSearch" prefHeight="40.0" prefWidth="400.0" promptText="🔍 Search Patient by NIC or Phone..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" />
+                                <TextField fx:id="txtSearch" onAction="#handleSearchByName" prefHeight="40.0" prefWidth="400.0" promptText="🔍 Search Patient by Name..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" />
                                 <Button mnemonicParsing="false" onAction="#handlePatientReset" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #6A5ACD; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset" textFill="WHITE">
                                     <font><Font name="Segoe UI Bold" size="13.0" /></font>
                                 </Button>

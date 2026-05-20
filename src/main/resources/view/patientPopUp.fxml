@@ -26,9 +26,6 @@
                                 </Label>
                             </children>
                         </VBox>
-                        <Button fx:id="btnClose" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #C0392B; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Close">
-                            <font><Font name="Segoe UI Bold" size="12.0" /></font>
-                        </Button>
                     </children>
                 </HBox>
 
