@@ -41,7 +41,7 @@
                                         <VBox HBox.hgrow="ALWAYS">
                                             <children>
                                                 <Label text="Appointment ID" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                                <TextField fx:id="txtAppointmentId" prefHeight="35.0" promptText="APP-001" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6;" />
+                                                <TextField fx:id="txtAppointmentId" onKeyPressed="#handleSessionSearch" prefHeight="35.0" promptText="APP-001" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6;" />
                                             </children>
                                         </VBox>
                                         <VBox HBox.hgrow="ALWAYS">
@@ -110,10 +110,10 @@
                                 </Button>
                                 <HBox spacing="10.0">
                                     <children>
-                                        <Button fx:id="btnReschedule" maxWidth="Infinity" prefHeight="40.0" style="-fx-background-color: #2980B9; -fx-background-radius: 8; -fx-cursor: hand;" text="Reschedule" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                        <Button fx:id="btnReschedule" maxWidth="Infinity" onAction="#handleSessionUpdate" prefHeight="40.0" style="-fx-background-color: #2980B9; -fx-background-radius: 8; -fx-cursor: hand;" text="Reschedule" textFill="WHITE" HBox.hgrow="ALWAYS">
                                             <font><Font name="Segoe UI Bold" size="13.0" /></font>
                                         </Button>
-                                        <Button fx:id="btnCancel" maxWidth="Infinity" prefHeight="40.0" style="-fx-background-color: #C0392B; -fx-background-radius: 8; -fx-cursor: hand;" text="Cancel Booking" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                        <Button fx:id="btnCancel" maxWidth="Infinity" onAction="#handleSessionDelete" prefHeight="40.0" style="-fx-background-color: #C0392B; -fx-background-radius: 8; -fx-cursor: hand;" text="Cancel Booking" textFill="WHITE" HBox.hgrow="ALWAYS">
                                             <font><Font name="Segoe UI Bold" size="13.0" /></font>
                                         </Button>
                                     </children>
@@ -127,9 +127,8 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <children>
-                                <TextField fx:id="txtSearch" prefHeight="40.0" prefWidth="350.0" promptText="🔍 Search Appointments..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" />
-                                <DatePicker fx:id="dpFilterDate" prefHeight="40.0" prefWidth="180.0" promptText="Filter by Date" style="-fx-background-radius: 20;" />
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #6A5ACD; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset" textFill="WHITE">
+                                <TextField fx:id="txtSearch" onAction="#handleSessionByName" prefHeight="40.0" prefWidth="350.0" promptText="🔍 Search Appointments..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" />
+                        <Button mnemonicParsing="false" onAction="#handleSessionReset" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #6A5ACD; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset" textFill="WHITE">
                            <font>
                               <Font name="Segoe UI Bold" size="13.0" />
                            </font>

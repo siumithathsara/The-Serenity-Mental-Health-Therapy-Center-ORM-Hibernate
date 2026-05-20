@@ -2,8 +2,12 @@ package lk.ijse.its1155_orm_course_work.service.custom.impl;
 
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.DAOFactory;
+import lk.ijse.its1155_orm_course_work.dao.custom.PatientDAO;
+import lk.ijse.its1155_orm_course_work.dao.custom.TherapistDAO;
+import lk.ijse.its1155_orm_course_work.dao.custom.TherapyProgramDAO;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapySessionDAO;
 import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
+import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
 import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.entity.Therapist;
 import lk.ijse.its1155_orm_course_work.entity.TherapyProgram;
@@ -18,6 +22,10 @@ import java.util.List;
 
 public class TherapySessionServiceImpl implements TherapySessionService {
     private final TherapySessionDAO therapySessionDAO =(TherapySessionDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.THERAPY_SESSION);
+    private PatientDAO patientDAO =(PatientDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PATIENT);
+    private final TherapistDAO therapistDAO = (TherapistDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.THERAPIST);
+    private TherapyProgramDAO programDAO = (TherapyProgramDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.THERAPY_PROGRAM);
+
     @Override
     public List<String> getBookedTimeSlots(String therapistId, LocalDate selectedDate) throws Exception {
         return therapySessionDAO.getBookedTimeSlots(therapistId, selectedDate);
@@ -51,7 +59,6 @@ public class TherapySessionServiceImpl implements TherapySessionService {
                 return false;
             }
 
-            // 3. Entity එක හදලා සේව් කරන්න
             TherapySession therapySession = new TherapySession();
             therapySession.setAppointmentId(dto.getAppointmentId());
             therapySession.setStatus(dto.getStatus());
@@ -115,6 +122,74 @@ public class TherapySessionServiceImpl implements TherapySessionService {
         }
 
         return sessionDTOList;
+    }
+
+    @Override
+    public TherapySessionDTO searchSession(String appointmentId) throws Exception {
+        TherapySession entity = therapySessionDAO.search(appointmentId);
+        if (entity != null) {
+            return new TherapySessionDTO(
+                    entity.getAppointmentId(), entity.getStatus(), entity.getSessionDate(),
+                    entity.getTimeSlot(), entity.getPatient().getId(), entity.getPatient().getName(),
+                    entity.getProgram().getId(), entity.getProgram().getProgramName(),
+                    entity.getTherapist().getId(), entity.getTherapist().getName()
+            );
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws Exception {
+        return therapySessionDAO.isSlotBookedForUpdate(therapistId, date, time, apptId);
+    }
+
+    @Override
+    public boolean updateSession(TherapySessionDTO dto) {
+        TherapySession entity = therapySessionDAO.search(dto.getAppointmentId());
+
+        if (entity != null) {
+
+            entity.setStatus(dto.getStatus());
+            entity.setSessionDate(dto.getSessionDate());
+            entity.setTimeSlot(dto.getTimeSlot());
+
+
+            entity.setPatient(patientDAO.search(dto.getPatientId()));
+            entity.setProgram(programDAO.search(dto.getProgramId()));
+            entity.setTherapist(therapistDAO.search(dto.getTherapistId()));
+
+            return therapySessionDAO.update(entity);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteSession(String appointmentId) throws Exception {
+        return therapySessionDAO.delete(appointmentId);
+    }
+
+    public Therapist getTherapistDetails(String name) throws Exception {
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            return therapySessionDAO.getTherapistByName(name, session);
+        }
+    }
+
+
+    public List<TherapyScheduleTM> getTodayDoctorSchedule(String therapistId) throws Exception {
+        List<TherapyScheduleTM> tmList = new ArrayList<>();
+
+        try (Session session = FactoryConfiguration.getInstance().getSession()) {
+            List<TherapySession> entityList = therapySessionDAO.getTodaySessionsByTherapist(therapistId, session);
+
+            for (TherapySession entity : entityList) {
+                tmList.add(new TherapyScheduleTM(
+                        entity.getTimeSlot(),
+                        entity.getPatient().getName(),
+                        entity.getStatus()
+                ));
+            }
+        }
+        return tmList;
     }
 
 }

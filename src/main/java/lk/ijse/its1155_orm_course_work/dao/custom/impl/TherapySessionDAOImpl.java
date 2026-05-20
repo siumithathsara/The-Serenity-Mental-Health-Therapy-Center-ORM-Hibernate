@@ -2,6 +2,7 @@ package lk.ijse.its1155_orm_course_work.dao.custom.impl;
 
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapySessionDAO;
+import lk.ijse.its1155_orm_course_work.entity.Therapist;
 import lk.ijse.its1155_orm_course_work.entity.TherapySession;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,17 +19,67 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
     @Override
     public boolean update(TherapySession entity) {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.update(entity);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            transaction.rollback();
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public boolean delete(String id) {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+
+            TherapySession sessionEntity = session.get(TherapySession.class, id);
+            if (sessionEntity != null) {
+                session.delete(sessionEntity);
+                transaction.commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            transaction.rollback();
+            e.printStackTrace();
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public TherapySession search(String id) {
-        return null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+
+        try {
+            String hql = "SELECT t FROM TherapySession t " +
+                    "JOIN FETCH t.patient " +
+                    "JOIN FETCH t.program " +
+                    "JOIN FETCH t.therapist " +
+                    "WHERE t.appointmentId = :id";
+
+            TherapySession sessionEntity = session.createQuery(hql, TherapySession.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
+
+            return sessionEntity;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -38,7 +89,7 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
         List<TherapySession> list = null;
 
         try {
-            transaction = session.beginTransaction(); // Transaction පටන් ගත්තා
+            transaction = session.beginTransaction();
 
             String hql = "SELECT t FROM TherapySession t " +
                     "JOIN FETCH t.patient " +
@@ -47,7 +98,7 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
             list = session.createQuery(hql, TherapySession.class).list();
 
-            transaction.commit(); // Transaction එක commit කළා
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
@@ -134,5 +185,55 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
                 .uniqueResult();
 
         return count > 0;
+    }
+
+    @Override
+    public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            String hql = "SELECT COUNT(t) FROM TherapySession t " +
+                    "WHERE t.therapist.id = :tId " +
+                    "AND t.sessionDate = :date " +
+                    "AND t.timeSlot = :time " +
+                    "AND t.appointmentId != :currentId";
+
+            Long count = (Long) session.createQuery(hql)
+                    .setParameter("tId", therapistId)
+                    .setParameter("date", date)
+                    .setParameter("time", time)
+                    .setParameter("currentId", apptId)
+                    .uniqueResult();
+            return count > 0;
+        } finally {
+            session.close();
+        }
+    }
+
+    public Therapist getTherapistByName(String name, Session session) {
+        String hql = "FROM Therapist t WHERE LOWER(TRIM(t.name)) LIKE LOWER(TRIM(:name))";
+
+        List<Therapist> list = session.createQuery(hql, Therapist.class)
+                .setParameter("name", name)
+                .getResultList();
+
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+
+    public List<TherapySession> getTodaySessionsByTherapist(String therapistId, Session session) {
+        String hql = "FROM TherapySession s " +
+                "JOIN FETCH s.patient p " +
+                "WHERE s.therapist.id = :therapistId " +
+                "AND s.sessionDate = :today " +
+                "AND s.status != 'Cancelled' " +
+                "ORDER BY s.timeSlot ASC";
+
+        return session.createQuery(hql, TherapySession.class)
+                .setParameter("therapistId", therapistId)
+                .setParameter("today", LocalDate.now())
+                .getResultList();
     }
 }

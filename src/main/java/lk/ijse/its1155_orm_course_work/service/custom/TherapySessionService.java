@@ -1,6 +1,8 @@
 package lk.ijse.its1155_orm_course_work.service.custom;
 
 import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
+import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
+import lk.ijse.its1155_orm_course_work.entity.Therapist;
 import lk.ijse.its1155_orm_course_work.service.SuperService;
 
 import java.time.LocalDate;
@@ -16,4 +18,16 @@ public interface TherapySessionService extends SuperService {
     public boolean isSlotBooked(String therapistId, LocalDate sessionDate, String cleanTimeSlot);
 
     public List<TherapySessionDTO> getAllSession() throws Exception;
+
+    public TherapySessionDTO searchSession(String appointmentId) throws  Exception;
+
+    public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws  Exception;
+
+    public boolean updateSession(TherapySessionDTO dto);
+
+    public boolean deleteSession(String appointmentId) throws Exception;
+
+    public Therapist getTherapistDetails(String name) throws Exception;
+
+    public List<TherapyScheduleTM> getTodayDoctorSchedule(String therapistId) throws Exception;
 }

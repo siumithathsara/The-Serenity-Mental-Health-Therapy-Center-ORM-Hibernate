@@ -4,15 +4,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import lk.ijse.its1155_orm_course_work.dto.PatientDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapistDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapyProgramDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
+import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
+import lk.ijse.its1155_orm_course_work.entity.Therapist;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PatientService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapistService;
@@ -20,10 +29,12 @@ import lk.ijse.its1155_orm_course_work.service.custom.TherapyProgramingService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TherapySessionController implements Initializable {
@@ -396,6 +407,10 @@ public class TherapySessionController implements Initializable {
 
             if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Therapy Session Booked Successfully").show();
+
+                if ("Confirmed".equalsIgnoreCase(status)) {
+                    openPaymentUI(appointmentId);
+                }
                 clearFields();
                 generateNewId();
                 loadSessionTable();
@@ -433,4 +448,172 @@ public class TherapySessionController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Error loading data!").show();
         }
     }
+
+    private void openPaymentUI(String appointmentId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/paymentPage.fxml"));
+            Parent root = loader.load();
+
+
+            PaymentController controller = loader.getController();
+            controller.setAppointmentId(appointmentId);
+
+            Stage stage = new Stage();
+            stage.setTitle("Payment Processing");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not open Payment UI!").show();
+        }
+    }
+
+    @FXML
+    void handleSessionSearch(KeyEvent event) {
+        try {
+            if (event.getCode() == KeyCode.ENTER) {
+                String appointmentId = txtAppointmentId.getText().trim();
+
+                if (appointmentId.isEmpty()) {
+                    new Alert(Alert.AlertType.WARNING, "Please enter an Appointment ID!").show();
+                    return;
+                }
+
+                TherapySessionDTO sessionDTO = sessionService.searchSession(appointmentId);
+
+                if (sessionDTO != null) {
+
+                    cmbStatus1.getSelectionModel().select(sessionDTO.getPatientId());
+                    txtPatientName.setText(sessionDTO.getPatientName());
+                    cmbProgram.getSelectionModel().select(sessionDTO.getProgramId() + " - " + sessionDTO.getProgramName());
+                    cmbTherapist.getSelectionModel().select(sessionDTO.getTherapistId() + " - " + sessionDTO.getTherapistName());
+                    dpSessionDate.setValue(sessionDTO.getSessionDate());
+                    cmbTimeSlot.getSelectionModel().select(sessionDTO.getTimeSlot());
+                    cmbStatus.getSelectionModel().select(sessionDTO.getStatus());
+
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Session not found!").show();
+                    clearFields();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong!").show();
+        }
+    }
+
+    @FXML
+    void handleSessionUpdate(ActionEvent event) {
+        try {
+            String apptId = txtAppointmentId.getText().trim();
+            String selectedTherapist = cmbTherapist.getSelectionModel().getSelectedItem();
+            String therapistId = selectedTherapist.split(" - ")[0].trim();
+            LocalDate date = dpSessionDate.getValue();
+            String time = cmbTimeSlot.getSelectionModel().getSelectedItem();
+
+
+            if (sessionService.isSlotBookedForUpdate(therapistId, date, time, apptId)) {
+                new Alert(Alert.AlertType.ERROR, "Selected therapist is already booked for this Time Slot!").show();
+                return;
+            }
+
+            TherapySessionDTO dto = new TherapySessionDTO(
+                    apptId, cmbStatus.getValue(), date, time,
+                    cmbStatus1.getSelectionModel().getSelectedItem(),
+                    cmbProgram.getSelectionModel().getSelectedItem().split(" - ")[0].trim(),
+                    therapistId
+            );
+
+
+            if (sessionService.updateSession(dto)) {
+                new Alert(Alert.AlertType.INFORMATION, "Updated Successfully!").show();
+                clearFields();
+                generateNewId();
+                loadSessionTable();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Update Failed!").show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+        }
+    }
+
+    @FXML
+    void handleSessionReset(ActionEvent event) {
+          clearFields();
+    }
+
+    @FXML
+    void handleSessionDelete(ActionEvent event) {
+        String appointmentId = txtAppointmentId.getText().trim();
+
+        if (appointmentId.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please search an Appointment ID to delete!").show();
+            return;
+        }
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this session?");
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDeleted = sessionService.deleteSession(appointmentId);
+
+                if (isDeleted) {
+                    new Alert(Alert.AlertType.INFORMATION, "Session Deleted Successfully!").show();
+                    clearFields();
+                    generateNewId();
+                    loadSessionTable();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to delete session!").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+            }
+        }
+    }
+
+    @FXML
+    void handleSessionByName(ActionEvent event) {
+        String searchText = txtSearch.getText().trim();
+
+        if (searchText.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please Enter name of the Therapist").show();
+            return;
+        }
+
+        try {
+            Therapist therapist = sessionService.getTherapistDetails(searchText);
+
+            if (therapist == null) {
+                new Alert(Alert.AlertType.ERROR, "No therapist found").show();
+                return;
+            }
+
+            List<TherapyScheduleTM> doctorTodaySessions = sessionService.getTodayDoctorSchedule(therapist.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TherapistSchedulePopUp.fxml"));
+            Parent root = loader.load();
+
+            TherapistSchedulePopUpController popUpController = loader.getController();
+            popUpController.setDoctorDetails(therapist.getName(), therapist.getSpecialization(), doctorTodaySessions);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Doctor's Daily Schedule");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.show();
+
+            txtSearch.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+        }
+    }
+
+
 }
