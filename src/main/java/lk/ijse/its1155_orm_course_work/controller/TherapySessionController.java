@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import lk.ijse.its1155_orm_course_work.dto.PatientDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapistDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapyProgramDTO;
@@ -14,9 +15,12 @@ import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PatientService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapistService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapyProgramingService;
+import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
 
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -25,7 +29,7 @@ public class TherapySessionController implements Initializable {
     private final PatientService patientService = (PatientService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.PATIENT);
     private final TherapistService therapistService = (TherapistService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPIST);
     private final TherapyProgramingService programService = (TherapyProgramingService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_PROGRAM);
-
+    private final TherapySessionService sessionService = (TherapySessionService)  ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
 
     @FXML
     private Button btnBook;
@@ -92,13 +96,27 @@ public class TherapySessionController implements Initializable {
 
     private final ObservableList<String> statusList = FXCollections.observableArrayList("PENDING", "CONFIRMED");
     private final ObservableList<String> timeSlots = FXCollections.observableArrayList(
-            "08:00 AM - 09:00 AM", "09:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", "01:00 PM - 02:00 PM"
+               "        08:00 AM - 09:00 AM" ,
+                    "        09:00 AM - 10:00 AM" ,
+                    "        10:00 AM - 11:00 AM" ,
+                    "        11:00 AM - 12:00 PM" ,
+                    "        01:00 PM - 02:00 PM" ,
+                    "        02:00 PM - 03:00 PM" ,
+                    "        03:00 PM - 04:00 PM" ,
+                    "        04:00 PM - 05:00 PM" ,
+                    "        05:00 PM - 06:00 PM" ,
+                    "        06:00 PM - 07:00 PM"
     );
+    private List<TherapistDTO> currentTherapistList = new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         loadPatientDetails();
         loadProgramDetails();
+        generateNewId();
+        cmbStatus.setItems(statusList);
+        cmbTimeSlot.setItems(timeSlots);
     }
 
     private void loadPatientDetails() {
@@ -184,6 +202,7 @@ public class TherapySessionController implements Initializable {
                 new Alert(Alert.AlertType.INFORMATION, "No active therapists assigned for this program!").show();
                 return;
             }
+            this.currentTherapistList = therapistDTOS;
 
             ObservableList<String> obList = FXCollections.observableArrayList();
             for (TherapistDTO therapistDTO : therapistDTOS) {
@@ -198,5 +217,108 @@ public class TherapySessionController implements Initializable {
         }
     }
 
+    private void setAvailableDatesForTherapist(TherapistDTO selectedTherapist) {
+        if (selectedTherapist == null || selectedTherapist.getWorkingDays() == null || selectedTherapist.getWorkingDays().isEmpty()) {
+            dpSessionDate.setDayCellFactory(null);
+            return;
+        }
 
+        Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #eeeeee;");
+                        }
+                        else {
+                            String fullDayName = item.getDayOfWeek().toString().toLowerCase();
+                            String shortDayName = fullDayName.substring(0, 3);
+
+                            boolean isWorkingDay = false;
+                            for (Object dayObj : selectedTherapist.getWorkingDays()) {
+                                String day = dayObj.toString().toLowerCase();
+                                if (day.contains(fullDayName) || day.contains(shortDayName)) {
+                                    isWorkingDay = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isWorkingDay) {
+                                setDisable(true);
+                                setStyle("-fx-background-color: #eeeeee; -fx-text-fill: #999999;");
+                            } else {
+                                setDisable(false);
+                                setStyle("");
+                            }
+                        }
+                    }
+                };
+            }
+        };
+
+        dpSessionDate.setDayCellFactory(dayCellFactory);
+    }
+
+    @FXML
+    void handleTherapistDate(ActionEvent event) {
+        String selectedItem = cmbTherapist.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) return;
+
+        String therapistId = selectedItem.split(" - ")[0].trim();
+
+        TherapistDTO selectedTherapistDTO = null;
+        for (TherapistDTO dto : currentTherapistList) {
+            if (dto.getId().equals(therapistId)) {
+                selectedTherapistDTO = dto;
+                break;
+            }
+        }
+
+        setAvailableDatesForTherapist(selectedTherapistDTO);
+    }
+
+    @FXML
+    void handleTimeSlot(ActionEvent event) {
+        try {
+            String selectedTherapist = cmbTherapist.getSelectionModel().getSelectedItem();
+            LocalDate selectedDate = dpSessionDate.getValue();
+
+            if (selectedTherapist == null || selectedDate == null) {
+                return;
+            }
+
+            String therapistId = selectedTherapist.split(" - ")[0].trim();
+
+            List<String> bookedSlots = sessionService.getBookedTimeSlots(therapistId, selectedDate);
+
+            ObservableList<String> availableSlots = FXCollections.observableArrayList(timeSlots);
+
+            if (bookedSlots != null) {
+                availableSlots.removeAll(bookedSlots);
+            }
+            cmbTimeSlot.setItems(availableSlots);
+
+            if (availableSlots.isEmpty()) {
+                new Alert(Alert.AlertType.INFORMATION, "All slots are fully booked for this Doctor on the selected date!").show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateNewId(){
+        try {
+            String nextId = sessionService.generateNextCustomerId();
+            txtAppointmentId.setText(nextId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to generate Patient ID").show();
+        }
+    }
 }

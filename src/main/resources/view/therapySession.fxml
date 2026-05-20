@@ -41,7 +41,7 @@
                                         <VBox HBox.hgrow="ALWAYS">
                                             <children>
                                                 <Label text="Appointment ID" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                                <TextField fx:id="txtAppointmentId" editable="false" prefHeight="35.0" promptText="APP-001" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6;" />
+                                                <TextField fx:id="txtAppointmentId" prefHeight="35.0" promptText="APP-001" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6;" />
                                             </children>
                                         </VBox>
                                         <VBox HBox.hgrow="ALWAYS">
@@ -80,7 +80,7 @@
                                 <VBox spacing="2.0">
                                     <children>
                                         <Label text="Assign Available Therapist" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                        <ComboBox fx:id="cmbTherapist" maxWidth="Infinity" prefHeight="35.0" promptText="Select Assigned Therapist" style="-fx-background-radius: 8;" />
+                                        <ComboBox fx:id="cmbTherapist" maxWidth="Infinity" onAction="#handleTherapistDate" prefHeight="35.0" promptText="Select Assigned Therapist" style="-fx-background-radius: 8;" />
                                     </children>
                                 </VBox>
 
@@ -89,7 +89,7 @@
                                         <VBox HBox.hgrow="ALWAYS">
                                             <children>
                                                 <Label text="Session Date" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                                <DatePicker fx:id="dpSessionDate" maxWidth="Infinity" prefHeight="35.0" style="-fx-background-radius: 8;" />
+                                                <DatePicker fx:id="dpSessionDate" maxWidth="Infinity" onAction="#handleTimeSlot" prefHeight="35.0" style="-fx-background-radius: 8;" />
                                             </children>
                                         </VBox>
                                         <VBox HBox.hgrow="ALWAYS">
