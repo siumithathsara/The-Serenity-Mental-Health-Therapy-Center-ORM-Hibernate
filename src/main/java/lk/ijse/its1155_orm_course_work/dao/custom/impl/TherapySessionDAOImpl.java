@@ -33,7 +33,28 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
     @Override
     public List<TherapySession> getAll() {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
+        List<TherapySession> list = null;
+
+        try {
+            transaction = session.beginTransaction(); // Transaction පටන් ගත්තා
+
+            String hql = "SELECT t FROM TherapySession t " +
+                    "JOIN FETCH t.patient " +
+                    "JOIN FETCH t.program " +
+                    "JOIN FETCH t.therapist";
+
+            list = session.createQuery(hql, TherapySession.class).list();
+
+            transaction.commit(); // Transaction එක commit කළා
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return list;
     }
 
     @Override
@@ -71,19 +92,47 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
     public List<String> getBookedTimeSlots(String therapistId, LocalDate date) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
+        List<String> bookedSlots = null;
 
-        String hql = "SELECT timeSlot FROM TherapySession WHERE id = :therapistId AND sessionDate = :date AND status != 'CANCELLED'";
+        try {
+            transaction = session.beginTransaction();
 
-        Query query = session.createQuery(hql);
-        query.setParameter("therapistId", therapistId);
-        query.setParameter("date", date);
+            String hql = "SELECT t.timeSlot FROM TherapySession t WHERE t.therapist.id = :tId AND t.sessionDate = :date";
 
-        List<String> bookedSlots = query.list();
+            Query<String> query = session.createQuery(hql, String.class);
+            query.setParameter("tId", therapistId);
+            query.setParameter("date", date);
 
-        transaction.commit();
-        session.close();
+            bookedSlots = query.list();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
 
         return bookedSlots;
+    }
+    @Override
+    public boolean save(TherapySession entity, Session session) throws Exception {
+        session.persist(entity);
+        return true;
+    }
+
+    @Override
+    public boolean isSlotBooked(String therapistId, LocalDate sessionDate, String timeSlot, Session session) {
+
+        String hql = "SELECT COUNT(t) FROM TherapySession t WHERE t.therapist.id = :tId AND t.sessionDate = :date AND t.timeSlot = :slot";
+
+        Long count = session.createQuery(hql, Long.class)
+                .setParameter("tId", therapistId)
+                .setParameter("date", sessionDate)
+                .setParameter("slot", timeSlot)
+                .uniqueResult();
+
+        return count > 0;
     }
 }

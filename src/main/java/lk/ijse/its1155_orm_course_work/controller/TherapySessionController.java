@@ -6,11 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import lk.ijse.its1155_orm_course_work.dto.PatientDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapistDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapyProgramDTO;
+import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PatientService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapistService;
@@ -83,7 +85,7 @@ public class TherapySessionController implements Initializable {
     private AnchorPane schedulingPage;
 
     @FXML
-    private TableView<?> tblAppointments;
+    private TableView<TherapySessionDTO> tblAppointments;
 
     @FXML
     private TextField txtAppointmentId;
@@ -108,15 +110,25 @@ public class TherapySessionController implements Initializable {
                     "        06:00 PM - 07:00 PM"
     );
     private List<TherapistDTO> currentTherapistList = new ArrayList<>();
+    private List<String> bookedSlotsList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        colId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        colPatient.setCellValueFactory(new PropertyValueFactory<>("patientName"));
+        colProgram.setCellValueFactory(new PropertyValueFactory<>("programName"));
+        colTherapist.setCellValueFactory(new PropertyValueFactory<>("therapistName"));
+        colDateTime.setCellValueFactory(new PropertyValueFactory<>("sessionDate"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
         loadPatientDetails();
         loadProgramDetails();
         generateNewId();
+        loadSessionTable();
         cmbStatus.setItems(statusList);
         cmbTimeSlot.setItems(timeSlots);
+
     }
 
     private void loadPatientDetails() {
@@ -284,28 +296,19 @@ public class TherapySessionController implements Initializable {
 
     @FXML
     void handleTimeSlot(ActionEvent event) {
+        String selectedTherapist = cmbTherapist.getSelectionModel().getSelectedItem();
+        LocalDate selectedDate = dpSessionDate.getValue();
+
+        if (selectedTherapist == null || selectedDate == null) return;
+
+        String therapistId = selectedTherapist.split(" - ")[0].trim();
+
+
         try {
-            String selectedTherapist = cmbTherapist.getSelectionModel().getSelectedItem();
-            LocalDate selectedDate = dpSessionDate.getValue();
+            bookedSlotsList = sessionService.getBookedTimeSlots(therapistId, selectedDate);
 
-            if (selectedTherapist == null || selectedDate == null) {
-                return;
-            }
 
-            String therapistId = selectedTherapist.split(" - ")[0].trim();
-
-            List<String> bookedSlots = sessionService.getBookedTimeSlots(therapistId, selectedDate);
-
-            ObservableList<String> availableSlots = FXCollections.observableArrayList(timeSlots);
-
-            if (bookedSlots != null) {
-                availableSlots.removeAll(bookedSlots);
-            }
-            cmbTimeSlot.setItems(availableSlots);
-
-            if (availableSlots.isEmpty()) {
-                new Alert(Alert.AlertType.INFORMATION, "All slots are fully booked for this Doctor on the selected date!").show();
-            }
+            cmbTimeSlot.setItems(FXCollections.observableArrayList(timeSlots));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -319,6 +322,115 @@ public class TherapySessionController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Failed to generate Patient ID").show();
+        }
+    }
+
+    @FXML
+    void handleBookingSessionSave(ActionEvent event) {
+
+        String appointmentId = txtAppointmentId.getText().trim();
+        String selectedPatientId = cmbStatus1.getSelectionModel().getSelectedItem();
+        String patientName = txtPatientName.getText().trim();
+        String selectedProgram = cmbProgram.getSelectionModel().getSelectedItem();
+        String selectedTherapist = cmbTherapist.getSelectionModel().getSelectedItem();
+        LocalDate sessionDate = dpSessionDate.getValue();
+        String timeSlot = cmbTimeSlot.getSelectionModel().getSelectedItem();
+        String status = cmbStatus.getSelectionModel().getSelectedItem();
+
+
+
+
+        if (appointmentId.isEmpty() ||
+                selectedPatientId == null || selectedPatientId.isEmpty() ||
+                patientName.isEmpty() ||
+                selectedProgram == null ||
+                selectedTherapist == null ||
+                sessionDate == null ||
+                timeSlot == null || timeSlot.isEmpty() ||
+                status == null || status.isEmpty()) {
+            System.out.println("ID: " + appointmentId + ", PatientID: " + selectedPatientId +
+                    ", Name: " + patientName + ", Program: " + selectedProgram +
+                    ", Therapist: " + selectedTherapist + ", Date: " + sessionDate +
+                    ", Time: " + timeSlot + ", Status: " + status);
+            new Alert(Alert.AlertType.WARNING, "Please fill all fields before booking!").show();
+            return;
+
+        }
+
+        if (!appointmentId.matches("^[A-Za-z0-9]{3,10}$")) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Appointment ID format!").show();
+            txtAppointmentId.requestFocus();
+            return;
+        }
+
+        if (!patientName.matches("^[A-Za-z ]+$")) {
+            new Alert(Alert.AlertType.ERROR, "Patient Name can only contain letters and spaces!").show();
+            txtPatientName.requestFocus();
+            return;
+        }
+
+        try {
+
+            String programId = selectedProgram.split(" - ")[0].trim();
+            String therapistId = selectedTherapist.split(" - ")[0].trim();
+            String cleanTimeSlot = timeSlot.trim();
+
+            boolean isAlreadyBooked = sessionService.isSlotBooked(therapistId, sessionDate, cleanTimeSlot);
+
+            if (isAlreadyBooked) {
+                new Alert(Alert.AlertType.ERROR, "Selected Therapist is already booked for this Time Slot!").show();
+                return;
+            }
+            TherapySessionDTO sessionDTO = new TherapySessionDTO(
+                    appointmentId,
+                    status,
+                    sessionDate,
+                    cleanTimeSlot,
+                    selectedPatientId,
+                    programId,
+                    therapistId
+            );
+
+
+            boolean isSaved = sessionService.bookSession(sessionDTO);
+
+            if (isSaved) {
+                new Alert(Alert.AlertType.INFORMATION, "Therapy Session Booked Successfully").show();
+                clearFields();
+                generateNewId();
+                loadSessionTable();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to book the session").show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
+        }
+    }
+
+    private void clearFields() {
+        cmbStatus1.getSelectionModel().clearSelection();
+        txtPatientName.clear();
+        cmbProgram.getSelectionModel().clearSelection();
+        cmbTherapist.getSelectionModel().clearSelection();
+        dpSessionDate.setValue(null);
+        cmbTimeSlot.getSelectionModel().clearSelection();
+        cmbStatus.getSelectionModel().clearSelection();
+    }
+
+    private void loadSessionTable(){
+        try {
+
+            List<TherapySessionDTO> sessionList = sessionService.getAllSession();
+
+            ObservableList<TherapySessionDTO> obList = FXCollections.observableArrayList(sessionList);
+
+            tblAppointments.setItems(obList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error loading data!").show();
         }
     }
 }

@@ -105,7 +105,7 @@
 
                         <VBox spacing="8.0">
                             <children>
-                                <Button fx:id="btnBook" maxWidth="Infinity" prefHeight="42.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Confirm &amp; Book Session" textFill="WHITE">
+                                <Button fx:id="btnBook" maxWidth="Infinity" onAction="#handleBookingSessionSave" prefHeight="42.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Confirm &amp; Book Session" textFill="WHITE">
                                     <font><Font name="Segoe UI Bold" size="14.0" /></font>
                                 </Button>
                                 <HBox spacing="10.0">
