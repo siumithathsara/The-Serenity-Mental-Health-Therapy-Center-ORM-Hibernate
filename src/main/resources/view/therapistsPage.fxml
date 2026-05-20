@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="therapistPage" prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: #EBF5FB;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.its1155_orm_course_work.controller.TherapistManagementController">
+    <children>
+        <!-- Header Section -->
+        <AnchorPane prefHeight="80.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="404.0" layoutY="23.0" text="Therapist Management" textFill="#1A5276">
+                    <font><Font name="Segoe UI Bold" size="28.0" /></font>
+                </Label>
+            </children>
+        </AnchorPane>
+
+        <!-- Main Body Section -->
+        <AnchorPane layoutY="80.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+            <children>
+                <!-- Left Side: Form Section -->
+                <VBox fx:id="vboxForm" prefWidth="420.0" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                    <padding>
+                        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <Label text="Add New Therapist" textFill="#1A5276">
+                            <font><Font name="Segoe UI Bold" size="18.0" /></font>
+                        </Label>
+
+                        <VBox spacing="8.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <!-- Therapist ID -->
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="Therapist ID" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                        <TextField fx:id="txtTherapistId" onKeyPressed="#handleTherapistSearch" prefHeight="35.0" promptText="T001" style="-fx-background-radius: 8;" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Full Name -->
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="Full Name" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                        <TextField fx:id="txtName" prefHeight="35.0" promptText="Dr. Saman Perera" style="-fx-background-radius: 8;" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Specialization & Status -->
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="Specialization" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                                <ComboBox fx:id="cmbSpecialization" maxWidth="Infinity" prefHeight="35.0" promptText="Select" style="-fx-background-radius: 8;" />
+                                            </children>
+                                        </VBox>
+                                        <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label text="Initial Status" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                                <ComboBox fx:id="cmbStatus" maxWidth="Infinity" prefHeight="35.0" promptText="Status" style="-fx-background-radius: 8;" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                                <!-- Working Days (Multiple Selection using CheckBoxes) -->
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label text="Working Days (Select Multiple)" textFill="#7F8C8D">
+                                            <font><Font name="Segoe UI Semibold" size="11.0" /></font>
+                                        </Label>
+                                        <!-- FlowPane එකක් පාවිච්චි කරලා තියෙන්නේ ඉඩ මදි වුනොත් CheckBoxes ටික ලස්සනට ඊළඟ පේලියට වැටෙන්න -->
+                                        <FlowPane hgap="10.0" style="-fx-padding: 5; -fx-border-color: #E5E7E9; -fx-border-radius: 8; -fx-background-color: #F8F9F9; -fx-background-radius: 8;" vgap="8.0">
+                                            <children>
+                                                <CheckBox fx:id="chkMon" text="Mon" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkTue" text="Tue" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkWed" text="Wed" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkThu" text="Thu" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkFri" text="Fri" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkSat" text="Sat" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                                <CheckBox fx:id="chkSun" text="Sun" textFill="#2C3E50"><font><Font name="Segoe UI" size="12.0" /></font></CheckBox>
+                                            </children>
+                                        </FlowPane>
+                                    </children>
+                                </VBox>
+
+                                <!-- Contact Number -->
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="Contact Number" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                        <TextField fx:id="txtPhone" prefHeight="35.0" promptText="07x xxxxxxx" style="-fx-background-radius: 8;" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Email Address -->
+                                <VBox spacing="2.0">
+                                    <children>
+                                        <Label text="Email Address" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                        <TextField fx:id="txtEmail" prefHeight="35.0" promptText="example@center.com" style="-fx-background-radius: 8;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Action Buttons -->
+                        <VBox spacing="10.0">
+                            <children>
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <Button fx:id="btnSave" maxWidth="Infinity" onAction="#handleTherapistSave" prefHeight="40.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Save" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                            <font><Font name="Segoe UI Bold" size="13.0" /></font>
+                                        </Button>
+                                        <Button fx:id="btnUpdate" maxWidth="Infinity" onAction="#handleTherapistUpdate" prefHeight="40.0" style="-fx-background-color: #2980B9; -fx-background-radius: 8; -fx-cursor: hand;" text="Update" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                            <font><Font name="Segoe UI Bold" size="13.0" /></font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                                <Button fx:id="btnDelete" maxWidth="Infinity" onAction="#handleTherapistDelete" prefHeight="40.0" style="-fx-background-color: #C0392B; -fx-background-radius: 8; -fx-cursor: hand;" text="Remove Therapist" textFill="WHITE">
+                                    <font><Font name="Segoe UI Bold" size="13.0" /></font>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+
+
+                <VBox spacing="15.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="480.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                    <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <TextField fx:id="txtSearch" onKeyPressed="#handleSearchByName" prefHeight="40.0" prefWidth="280.0" promptText="🔍 Search Name/ID..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" />
+                                <Label text="Filter by Day:" textFill="#1A5276">
+                                    <font><Font name="Segoe UI Bold" size="13.0" /></font>
+                                </Label>
+                                <ComboBox fx:id="cmbFilterDay" onAction="#handleSearchByDate" prefHeight="40.0" prefWidth="150.0" promptText="Select Day" style="-fx-background-radius: 20;" />
+                                <Button mnemonicParsing="false" onAction="#handleTherapistReset" prefHeight="40.0" prefWidth="80.0" style="-fx-background-color: #6A5ACD; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset" textFill="WHITE">
+                                    <font><Font name="Segoe UI Bold" size="13.0" /></font>
+                                </Button>
+                            </children>
+                        </HBox>
+
+                        <TableView fx:id="tblTherapists" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #dcdde1;" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colId" prefWidth="70.0" text="ID" />
+                                <TableColumn fx:id="colName" prefWidth="180.0" text="Name" />
+                                <TableColumn fx:id="colSpecialization" prefWidth="140.0" text="Specialization" />
+                                <TableColumn fx:id="colDay" prefWidth="120.0" text="Working Days" />
+                                <TableColumn fx:id="colStatus" prefWidth="90.0" text="Status" />
+                                <TableColumn fx:id="colPhone" prefWidth="110.0" text="Contact" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
