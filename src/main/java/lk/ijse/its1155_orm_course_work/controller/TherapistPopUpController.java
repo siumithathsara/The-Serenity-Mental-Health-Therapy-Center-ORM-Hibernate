@@ -82,9 +82,9 @@ public class TherapistPopUpController implements Initializable {
         cmbFilterDay.valueProperty().addListener((observable, oldValue, newValue) -> applyFilter());
     }
 
-    // 🌟 නමෙන් සර්ච් කරද්දී (handleSearchByName) වැඩ කරන්නේ මේක:
+
     public void initSearchText(String searchText) {
-        // මේ පේජ් එකේ ඉඳන් සර්ච් කරද්දී programId එකක් නැති නිසා මුළු ලිස්ට් එකම ලෝඩ් කරන්න null පාස් කරනවා
+
         this.programId = null;
         loadAllTherapists();
 
@@ -94,7 +94,6 @@ public class TherapistPopUpController implements Initializable {
         }
     }
 
-    // 🌟 ඩේට් එකෙන් සර්ච් කරද්දී (handleSearchByDate) හෝ වෙනත් පේජ් එකකින් එද්දී වැඩ කරන්නේ මේක:
     public void initSearchData(String searchText, String searchDay, String programId) {
         this.programId = programId;
 
@@ -116,7 +115,7 @@ public class TherapistPopUpController implements Initializable {
     private void loadAllTherapists() {
         masterDataList.clear();
         try {
-            // programId එක null වුණත් බය නැතුව සර්විස් එකට පාස් කරනවා (එතකොට සර්විස් එකෙන් ඔක්කොම දත්ත ටික එනවා)
+
             List<TherapistDTO> allTherapists = therapistService.getAllTherapists(programId);
 
             if (allTherapists != null) {

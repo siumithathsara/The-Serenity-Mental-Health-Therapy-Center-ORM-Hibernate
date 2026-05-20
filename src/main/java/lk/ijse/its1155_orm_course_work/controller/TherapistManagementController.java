@@ -291,7 +291,7 @@ public class TherapistManagementController implements Initializable {
 
     private void loadTherapistTable() {
         try {
-            // 🌟 Service එකට null පාස් කරලා, මුළු සේවාදායකයින් ලිස්ට් එකම ගන්න හැදුවා
+
             List<TherapistDTO> dtoList = therapistService.getAllTherapists(null);
 
             ObservableList<TherapistTM> tmList = FXCollections.observableArrayList();
@@ -527,7 +527,7 @@ public class TherapistManagementController implements Initializable {
             TherapistPopUpController popupController = loader.getController();
 
             if (popupController != null) {
-                // 🌟 2. Parameter 3ක් ඉල්ලන නිසා, මෙතනට 'null' කියලා තුන්වෙනි එක පාස් කළා (මොකද මේ පේජ් එකේ programId එකක් නැහැ)
+
                 popupController.initSearchData(typedText, selectedDay, null);
             }
 
