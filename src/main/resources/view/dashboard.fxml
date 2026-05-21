@@ -65,7 +65,7 @@
                             </children>
                         </HBox>
 
-                        <Button mnemonicParsing="false" onAction="#UserPageBtn" style="-fx-background-color: #27AE60; -fx-background-radius: 5; -fx-cursor: hand;" text="⚙️ User Management" textFill="WHITE">
+                        <Button fx:id="userPageBtn" mnemonicParsing="false" onAction="#UserPageBtn" style="-fx-background-color: #27AE60; -fx-background-radius: 5; -fx-cursor: hand;" text="⚙️ User Management" textFill="WHITE">
                             <font><Font name="Segoe UI Bold" size="12.0" /></font>
                             <padding><Insets bottom="8.0" left="12.0" right="12.0" top="8.0" /></padding>
                         </Button>
@@ -148,10 +148,10 @@
                         <Button mnemonicParsing="false" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1A5276, #3498DB); -fx-background-radius: 18; -fx-cursor: hand;" text="💳 Payments &amp; Invoicing" textFill="WHITE" GridPane.columnIndex="2">
                             <font><Font name="Segoe UI Bold" size="18.0" /></font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#therapistPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1B4F72, #2E86C1); -fx-background-radius: 18; -fx-cursor: hand;" text="👨‍⚕️ Manage Therapists" textFill="WHITE" GridPane.rowIndex="1">
+                        <Button fx:id="therapistPageBtn" mnemonicParsing="false" onAction="#therapistPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1B4F72, #2E86C1); -fx-background-radius: 18; -fx-cursor: hand;" text="👨‍⚕️ Manage Therapists" textFill="WHITE" GridPane.rowIndex="1">
                             <font><Font name="Segoe UI Bold" size="18.0" /></font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#programPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1B4F72, #2E86C1); -fx-background-radius: 18; -fx-cursor: hand;" text="📋 Therapy Programs" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button fx:id="programPageBtn" mnemonicParsing="false" onAction="#programPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1B4F72, #2E86C1); -fx-background-radius: 18; -fx-cursor: hand;" text="📋 Therapy Programs" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font><Font name="Segoe UI Bold" size="18.0" /></font>
                         </Button>
                         <Button mnemonicParsing="false" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #515A5A, #7F8C8D); -fx-background-radius: 18; -fx-cursor: hand;" text="📊 Reports &amp; Analytics" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">

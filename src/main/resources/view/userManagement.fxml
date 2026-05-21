@@ -93,7 +93,7 @@
                                 <HBox spacing="10.0">
                                     <children>
                                         <Button fx:id="btnUpdate" maxWidth="Infinity" onAction="#handleUserUpdate" prefHeight="38.0" style="-fx-background-color: #2980B9; -fx-background-radius: 8; -fx-cursor: hand;" text="Update" textFill="WHITE" HBox.hgrow="ALWAYS"><font><Font name="Segoe UI Bold" size="13.0" /></font></Button>
-                                        <Button fx:id="btnDelete" maxWidth="Infinity" prefHeight="38.0" style="-fx-background-color: #C0392B; -fx-background-radius: 8; -fx-cursor: hand;" text="Delete" textFill="WHITE" HBox.hgrow="ALWAYS"><font><Font name="Segoe UI Bold" size="13.0" /></font></Button>
+                                        <Button fx:id="btnDelete" maxWidth="Infinity" onAction="#handleUserDelete" prefHeight="38.0" style="-fx-background-color: #C0392B; -fx-background-radius: 8; -fx-cursor: hand;" text="Delete" textFill="WHITE" HBox.hgrow="ALWAYS"><font><Font name="Segoe UI Bold" size="13.0" /></font></Button>
                                     </children>
                                 </HBox>
                             </children>
@@ -107,8 +107,8 @@
                         <!-- 🔍 Search Bar with Reset Button Integration -->
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <TextField fx:id="txtSearch" prefHeight="40.0" promptText="🔍 Search Users..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" HBox.hgrow="ALWAYS" />
-                                <Button fx:id="btnReset" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #6A5ACD; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset">
+                                <TextField fx:id="txtSearch" onAction="#handleUserByUsername" prefHeight="40.0" promptText="🔍 Search Users..." style="-fx-background-radius: 20; -fx-padding: 0 20 0 20;" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="btnReset" onAction="#handleUserReset" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #6A5ACD; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;" text="Reset">
                                     <font><Font name="Segoe UI Bold" size="13.0" /></font>
                                 </Button>
                             </children>

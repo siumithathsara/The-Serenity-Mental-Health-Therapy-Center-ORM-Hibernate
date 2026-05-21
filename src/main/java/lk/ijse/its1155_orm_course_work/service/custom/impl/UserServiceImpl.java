@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
             }
 
             optionalUser.setUser_id(userDTO.getUser_id());
+            optionalUser.setUsername(userDTO.getUsername());
             optionalUser.setName(userDTO.getName());
             optionalUser.setEmail(userDTO.getEmail());
             optionalUser.setRole(userDTO.getRole());
@@ -92,6 +93,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public String generateNextUserId() {
         return userDAO.generateNextId();
+    }
+
+    @Override
+    public User searchUserByUsername(String searchUsername) {
+        return userDAO.getUserByUsername(searchUsername);
+    }
+
+    @Override
+    public boolean deleteUser(String userId) {
+        return userDAO.delete(userId);
     }
 }
 

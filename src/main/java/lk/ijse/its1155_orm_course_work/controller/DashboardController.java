@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -28,6 +31,17 @@ public class DashboardController implements Initializable {
     @FXML
     private Label lblTime;
 
+    @FXML
+    private Button programPageBtn;
+
+    @FXML
+    private Button therapistPageBtn;
+
+    @FXML
+    private Button userPageBtn;
+
+
+
     public void initialize(URL url, ResourceBundle rb) {
         updateDateTime();
     }
@@ -35,15 +49,15 @@ public class DashboardController implements Initializable {
     public void setUserRole(String role) {
         boolean isAdmin = "Admin".equalsIgnoreCase(role);
 
-//        if (isAdmin) {
-//            therapistsPageBtn.setVisible(true);
-//            therapyProgramPageBtn.setVisible(true);
-//            usersPageBtn.setVisible(true);
-//        } else {
-//            therapistsPageBtn.setVisible(false);
-//            therapyProgramPageBtn.setVisible(false);
-//            usersPageBtn.setVisible(false);
-//        }
+        if (isAdmin) {
+           therapistPageBtn.setDisable(false);
+            programPageBtn.setDisable(false);;
+            userPageBtn.setDisable(false);;
+        } else {
+            therapistPageBtn.setDisable(true);;
+            programPageBtn.setDisable(true);
+            userPageBtn.setDisable(true);
+        }
 
 
         System.out.println("Admin access: " + isAdmin);
@@ -100,8 +114,29 @@ public class DashboardController implements Initializable {
     }
     @FXML
     void logoutBtn(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to logout?", ButtonType.YES, ButtonType.NO);
+        alert.setTitle("Logout Confirmation");
+        alert.setHeaderText(null);
 
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+                    javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/login.fxml"));
+                    javafx.scene.Parent root = loader.load();
+
+                    javafx.stage.Stage stage = (javafx.stage.Stage) majorPage.getScene().getWindow();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.centerOnScreen();
+                    stage.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Failed to load the login page!").show();
+                }
+            }
+        });
     }
+
     private void updateDateTime() {
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();

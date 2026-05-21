@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.its1155_orm_course_work.dto.UserDTO;
 import lk.ijse.its1155_orm_course_work.dto.tm.UserTM;
+import lk.ijse.its1155_orm_course_work.entity.User;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.UserService;
 
@@ -167,7 +168,7 @@ public class UserManagementController implements Initializable {
         }
         try {
             UserDTO userDTO = new UserDTO(
-                    userId, username, fullName, email, role, password
+                    userId, username,fullName,  password, email, role
             );
             boolean isSaved = userService.saveUser(userDTO);
 
@@ -247,14 +248,14 @@ public class UserManagementController implements Initializable {
         }
 
         try {
-            // 3. DTO එක සාදාගැනීම
+
             UserDTO userDTO = new UserDTO(
-                    userId, username, fullName, email, role, password
+                    userId, username, fullName,password, email, role
             );
             boolean isUpdated = userService.updateUser(userDTO);
 
             if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "User account updated successfully! 🎉").show();
+                new Alert(Alert.AlertType.INFORMATION, "User account updated successfully! ").show();
                 clearFields();
                 loadAllUsers();
             } else {
@@ -288,6 +289,76 @@ public class UserManagementController implements Initializable {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Failed to generate User ID").show();
         }
+    }
+
+    @FXML
+    void handleUserReset(ActionEvent event) {
+         clearFields();
+    }
+
+    @FXML
+    void handleUserByUsername(ActionEvent event) {
+        String searchUsername = txtSearch.getText().trim();
+
+        if (searchUsername.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please enter a username to search!").show();
+            return;
+        }
+        try {
+            User user = userService.searchUserByUsername(searchUsername);
+
+            if (user != null) {
+
+                txtUserId.setText(user.getUser_id());
+                txtUsername.setText(user.getUsername());
+                txtFullName.setText(user.getName());
+                txtEmail.setText(user.getEmail());
+                cmbRole.setValue(user.getRole());
+                 txtPassword.setText(user.getPassword());
+
+            } else {
+
+                new Alert(Alert.AlertType.ERROR, "User not found!").show();
+                clearFields();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong while searching!").show();
+        }
+    }
+
+    @FXML
+    void handleUserDelete(ActionEvent event) {
+        String userId = txtUserId.getText().trim();
+        if (userId.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please select or search a user first!").show();
+            return;
+        }
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this user?", ButtonType.YES, ButtonType.NO);
+        confirmationAlert.setTitle("Delete Confirmation");
+
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+
+                    boolean isDeleted = userService.deleteUser(userId);
+
+                    if (isDeleted) {
+                        new Alert(Alert.AlertType.INFORMATION, "User deleted successfully!").show();
+                        clearFields();
+                        loadAllUsers();
+                        generateNextUserId();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Failed to delete the user!").show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Something went wrong during deletion!").show();
+                }
+            }
+        });
     }
 
 }

@@ -6,4 +6,5 @@ import lk.ijse.its1155_orm_course_work.entity.User;
 
 public interface UserDAO extends CrudDAO<User> {
     User findByUsername(String username);
+    User getUserByUsername(String searchUsername);
 }
