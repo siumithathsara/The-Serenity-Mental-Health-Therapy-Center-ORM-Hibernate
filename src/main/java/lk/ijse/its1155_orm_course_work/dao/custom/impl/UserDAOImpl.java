@@ -32,7 +32,18 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean update(User entity) {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.merge(entity);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            transaction.rollback();
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
@@ -47,12 +58,38 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAll() {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        List<User> users = session.createQuery("FROM User", User.class).list();
+        session.close();
+        return users;
     }
 
     @Override
     public String generateNextId() {
-        return "";
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            String sql = "SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1";
+
+            String lastId = session.createNativeQuery(sql, String.class)
+                    .uniqueResult();
+            transaction.commit();
+
+            if (lastId != null) {
+
+                int number = Integer.parseInt(lastId.substring(1));
+                number++;
+                return String.format("U%03d", number);
+            }
+
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return "U001";
     }
 
     @Override
