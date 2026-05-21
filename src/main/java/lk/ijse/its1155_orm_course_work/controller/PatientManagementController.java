@@ -332,7 +332,7 @@ public class PatientManagementController implements Initializable {
             Patient patient = patientService.searchPatientByName(searchText);
 
             if (patient == null) {
-                new Alert(Alert.AlertType.ERROR, "මෙම නමින් රෝගියෙකු පද්ධතියේ සොයාගත නොහැක!").show();
+                new Alert(Alert.AlertType.ERROR, "Patient Name not found").show();
                 return;
             }
 
@@ -364,7 +364,7 @@ public class PatientManagementController implements Initializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "රෝගී දත්ත ලෝඩ් කිරීමේදී දෝෂයක් සිදු විය!").show();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
         }
     }
 
