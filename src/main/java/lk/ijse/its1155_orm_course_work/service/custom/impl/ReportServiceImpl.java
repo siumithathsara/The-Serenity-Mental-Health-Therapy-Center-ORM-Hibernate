@@ -6,7 +6,6 @@ import lk.ijse.its1155_orm_course_work.dao.DAOFactory;
 import lk.ijse.its1155_orm_course_work.dao.custom.ReportDAO;
 import lk.ijse.its1155_orm_course_work.dto.tm.FinancialTM;
 import lk.ijse.its1155_orm_course_work.dto.tm.TherapistPerformanceTM;
-import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.ReportService;
 
 import java.time.Month;
@@ -18,6 +17,7 @@ import java.util.Map;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportDAO reportDAO = (ReportDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.REPORT);
+
     @Override
     public List<FinancialTM> getFinancialReport(int month) {
         List<Object[]> rawData = reportDAO.getPaymentsByMonth(month);

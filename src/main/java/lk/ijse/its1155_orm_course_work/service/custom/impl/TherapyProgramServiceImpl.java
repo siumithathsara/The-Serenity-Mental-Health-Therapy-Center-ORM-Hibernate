@@ -1,7 +1,6 @@
 package lk.ijse.its1155_orm_course_work.service.custom.impl;
 
 import lk.ijse.its1155_orm_course_work.dao.DAOFactory;
-import lk.ijse.its1155_orm_course_work.dao.custom.PatientDAO;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapyProgramDAO;
 import lk.ijse.its1155_orm_course_work.dto.TherapyProgramDTO;
 import lk.ijse.its1155_orm_course_work.entity.TherapyProgram;
@@ -35,10 +34,10 @@ public class TherapyProgramServiceImpl implements TherapyProgramingService {
         List<TherapyProgramDTO> programDTOs = new ArrayList<>();
         for (TherapyProgram program : programs) {
             TherapyProgramDTO programDTO = new TherapyProgramDTO(
-            program.getId(),
-            program.getProgramName(),
-            program.getDuration(),
-            program.getFee());
+                    program.getId(),
+                    program.getProgramName(),
+                    program.getDuration(),
+                    program.getFee());
 
             programDTOs.add(programDTO);
 

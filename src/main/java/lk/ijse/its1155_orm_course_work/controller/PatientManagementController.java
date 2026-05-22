@@ -22,7 +22,6 @@ import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PatientService;
 
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
@@ -367,7 +366,6 @@ public class PatientManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
         }
     }
-
 
 
 }

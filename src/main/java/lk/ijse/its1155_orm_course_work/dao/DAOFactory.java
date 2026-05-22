@@ -12,6 +12,29 @@ public class DAOFactory {
         return (daoFactory == null) ? (daoFactory = new DAOFactory()) : daoFactory;
     }
 
+    public SuperDAO getDAO(DAOType type) {
+        switch (type) {
+            case PATIENT:
+                return new PatientDAOImpl();
+            case REPORT:
+                return new ReportDAOImpl();
+            case PAYMENT:
+                return new PaymentDAOImpl();
+            case THERAPIST:
+                return new TherapistDAOImpl();
+            case DASHBOARD:
+                return new DashBoardDAOImpl();
+            case THERAPY_PROGRAM:
+                return new TherapyProgramDAOImpl();
+            case THERAPY_SESSION:
+                return new TherapySessionDAOImpl();
+            case USER:
+                return new UserDAOImpl();
+            default:
+                return null;
+        }
+    }
+
     public enum DAOType {
         PATIENT,
         REPORT,
@@ -22,30 +45,5 @@ public class DAOFactory {
         THERAPY_PROGRAM,
         THERAPY_SESSION,
         USER
-    }
-
-    public SuperDAO getDAO(DAOType type) {
-        switch (type) {
-            case PATIENT:
-                return new PatientDAOImpl();
-            case REPORT:
-               return new ReportDAOImpl();
-            case PAYMENT:
-                return new PaymentDAOImpl();
-            case THERAPIST:
-               return new TherapistDAOImpl();
-            case DASHBOARD:
-               return new DashBoardDAOImpl();
-            case THERAPIST_PROGRAM:
-//                return new TherapistProgramDAOImpl();
-            case THERAPY_PROGRAM:
-                return new TherapyProgramDAOImpl();
-            case THERAPY_SESSION:
-                return new TherapySessionDAOImpl();
-            case USER:
-                return new UserDAOImpl();
-            default:
-                return null;
-        }
     }
 }

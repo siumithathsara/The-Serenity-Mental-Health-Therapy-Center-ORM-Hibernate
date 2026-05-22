@@ -14,15 +14,15 @@ public interface TherapySessionService extends SuperService {
 
     public String generateNextSessionId() throws Exception;
 
-    public boolean bookSession(TherapySessionDTO sessionDTO) throws  Exception;
+    public boolean bookSession(TherapySessionDTO sessionDTO) throws Exception;
 
     public boolean isSlotBooked(String therapistId, LocalDate sessionDate, String cleanTimeSlot);
 
     public List<TherapySessionDTO> getAllSession() throws Exception;
 
-    public TherapySessionDTO searchSession(String appointmentId) throws  Exception;
+    public TherapySessionDTO searchSession(String appointmentId) throws Exception;
 
-    public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws  Exception;
+    public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws Exception;
 
     public boolean updateSession(TherapySessionDTO dto);
 

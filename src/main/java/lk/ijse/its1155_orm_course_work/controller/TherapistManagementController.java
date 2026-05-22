@@ -394,23 +394,29 @@ public class TherapistManagementController implements Initializable {
         if (therapistName.isEmpty() || therapistPhone.isEmpty() || therapistEmail.isEmpty() || specialization == null || status == null) {
             new Alert(Alert.AlertType.WARNING, "Please fill all required fields!").show();
             return;
-        } if (therapistName.startsWith("Dr. ")) {
+        }
+        if (therapistName.startsWith("Dr. ")) {
             therapistName = therapistName.replaceFirst("Dr. ", "").trim();
-        } if (!therapistId.matches(THERAPIST_ID_REGEX)) {
+        }
+        if (!therapistId.matches(THERAPIST_ID_REGEX)) {
             new Alert(Alert.AlertType.ERROR, "Invalid Therapist ID").show();
             return;
-        } if (!therapistName.matches(THERAPIST_NAME_REGEX)) {
+        }
+        if (!therapistName.matches(THERAPIST_NAME_REGEX)) {
             new Alert(Alert.AlertType.ERROR, "Invalid Therapist name").show();
             txtName.requestFocus();
             return;
-        } if (workingDays.isEmpty()) {
+        }
+        if (workingDays.isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Please select at least one working day!").show();
             return;
-        } if (!therapistPhone.matches(THERAPIST_CONTACT_REGEX)) {
+        }
+        if (!therapistPhone.matches(THERAPIST_CONTACT_REGEX)) {
             new Alert(Alert.AlertType.ERROR, "Invalid Therapist Phone").show();
             txtPhone.requestFocus();
             return;
-        } if (!therapistEmail.matches(THERAPIST_EMAIL_REGEX)) {
+        }
+        if (!therapistEmail.matches(THERAPIST_EMAIL_REGEX)) {
             new Alert(Alert.AlertType.ERROR, "Invalid Email Address").show();
             txtEmail.requestFocus();
             return;

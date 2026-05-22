@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface ReportService extends SuperService {
     public List<FinancialTM> getFinancialReport(int month);
+
     public List<PieChart.Data> getPieChartData(int month);
+
     public XYChart.Series<String, Number> getBarChartData();
+
     public List<TherapistPerformanceTM> getTherapistPerformanceReport();
 }

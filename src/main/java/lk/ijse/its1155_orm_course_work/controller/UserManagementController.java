@@ -18,14 +18,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserManagementController implements Initializable {
-    UserService userService = (UserService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.USER);
     private final ObservableList<UserTM> userTMList = FXCollections.observableArrayList();
-
     private final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
     private final String USER_ID_REGEX = "^U\\d{3}$";
     private final String USERNAME_REGEX = "^[a-zA-Z0-9_]{3,20}$";
     private final String NAME_REGEX = "^[a-zA-Z\\s]{3,50}$";
-
+    UserService userService = (UserService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.USER);
     @FXML
     private Button btnDelete;
 
@@ -168,7 +166,7 @@ public class UserManagementController implements Initializable {
         }
         try {
             UserDTO userDTO = new UserDTO(
-                    userId, username,fullName,  password, email, role
+                    userId, username, fullName, password, email, role
             );
             boolean isSaved = userService.saveUser(userDTO);
 
@@ -182,11 +180,11 @@ public class UserManagementController implements Initializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went wrong " ).show();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong ").show();
         }
     }
 
-    private void loadAllUsers(){
+    private void loadAllUsers() {
         userTMList.clear();
         for (UserDTO dto : userService.getAllUsers()) {
             userTMList.add(new UserTM(
@@ -250,7 +248,7 @@ public class UserManagementController implements Initializable {
         try {
 
             UserDTO userDTO = new UserDTO(
-                    userId, username, fullName,password, email, role
+                    userId, username, fullName, password, email, role
             );
             boolean isUpdated = userService.updateUser(userDTO);
 
@@ -280,7 +278,7 @@ public class UserManagementController implements Initializable {
         tblUsers.getSelectionModel().clearSelection();
     }
 
-    private void generateNextUserId(){
+    private void generateNextUserId() {
         try {
             String nextId = userService.generateNextUserId();
             txtUserId.setText(nextId);
@@ -293,7 +291,7 @@ public class UserManagementController implements Initializable {
 
     @FXML
     void handleUserReset(ActionEvent event) {
-         clearFields();
+        clearFields();
     }
 
     @FXML
@@ -314,7 +312,7 @@ public class UserManagementController implements Initializable {
                 txtFullName.setText(user.getName());
                 txtEmail.setText(user.getEmail());
                 cmbRole.setValue(user.getRole());
-                 txtPassword.setText(user.getPassword());
+                txtPassword.setText(user.getPassword());
 
             } else {
 

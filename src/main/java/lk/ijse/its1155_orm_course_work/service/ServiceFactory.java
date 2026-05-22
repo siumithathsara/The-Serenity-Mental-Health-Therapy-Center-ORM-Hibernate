@@ -12,18 +12,6 @@ public class ServiceFactory {
         return (boFactory == null) ? (boFactory = new ServiceFactory()) : boFactory;
     }
 
-    public enum BOType {
-        PATIENT,
-        REPORT,
-        PAYMENT,
-        THERAPIST,
-        DASHBOARD,
-        THERAPIST_PROGRAM,
-        THERAPY_PROGRAM,
-        THERAPY_SESSION,
-        USER
-    }
-
     public SuperService getBO(BOType type) {
         switch (type) {
             case PATIENT:
@@ -31,13 +19,12 @@ public class ServiceFactory {
             case REPORT:
                 return new ReportServiceImpl();
             case PAYMENT:
-               return new PaymentServiceImpl();
+                return new PaymentServiceImpl();
             case THERAPIST:
                 return new TherapistServiceImpl();
             case DASHBOARD:
                 return new DashBoardServiceImpl();
-            case THERAPIST_PROGRAM:
-//                return new TherapistProgramBOImpl();
+
             case THERAPY_PROGRAM:
                 return new TherapyProgramServiceImpl();
             case THERAPY_SESSION:
@@ -47,5 +34,16 @@ public class ServiceFactory {
             default:
                 return null;
         }
+    }
+
+    public enum BOType {
+        PATIENT,
+        REPORT,
+        PAYMENT,
+        THERAPIST,
+        DASHBOARD,
+        THERAPY_PROGRAM,
+        THERAPY_SESSION,
+        USER
     }
 }

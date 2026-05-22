@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface ReportDAO extends SuperDAO {
     List<Object[]> getPaymentsByMonth(int month);
+
     List<Object[]> getMonthlySessionCount();
+
     List<Object[]> getTherapistPerformance();
 
 }

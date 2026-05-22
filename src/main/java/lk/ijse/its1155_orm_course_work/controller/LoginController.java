@@ -44,6 +44,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
     private void navigateTo(String fxmlFile, String role) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

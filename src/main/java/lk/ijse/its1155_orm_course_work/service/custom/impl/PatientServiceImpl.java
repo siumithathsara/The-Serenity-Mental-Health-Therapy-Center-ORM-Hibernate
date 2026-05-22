@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PatientServiceImpl implements PatientService {
- private PatientDAO patientDAO =(PatientDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PATIENT);
+    private PatientDAO patientDAO = (PatientDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.PATIENT);
+
     @Override
     public boolean savePatient(PatientDTO patientDTO) throws Exception {
         return patientDAO.save(new Patient(
@@ -76,7 +77,7 @@ public class PatientServiceImpl implements PatientService {
                 patient.getPhone(),
                 patient.getAddress(),
                 patient.getRegisteredDate()
-                );
+        );
     }
 
     @Override

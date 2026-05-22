@@ -13,7 +13,7 @@ public interface TherapyProgramingService extends SuperService {
 
     public List<TherapyProgramDTO> getPrograms() throws Exception, ClassNotFoundException;
 
-    public TherapyProgramDTO searchProgram(String id) throws  Exception;
+    public TherapyProgramDTO searchProgram(String id) throws Exception;
 
     public boolean updateProgram(TherapyProgramDTO programDTO) throws Exception;
 

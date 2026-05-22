@@ -111,8 +111,6 @@ public class TherapistDAOImpl implements TherapistDAO {
         }
     }
 
-
-
     @Override
     public String generateNextId() {
         Session session = FactoryConfiguration.getInstance().getSession();

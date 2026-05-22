@@ -73,9 +73,10 @@ public class PaymentDAOImpl implements PaymentDAO {
 
     @Override
     public boolean save(Payment entity, Session session) throws Exception {
-            session.save(entity);
-            return true;
-        }
+        session.save(entity);
+        return true;
+
+    }
 
     @Override
     public List<Payment> getAllPayments() throws PaymentProcessingException {

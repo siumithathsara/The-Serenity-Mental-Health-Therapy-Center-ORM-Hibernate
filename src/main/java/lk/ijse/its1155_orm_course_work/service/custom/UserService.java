@@ -9,10 +9,16 @@ import java.util.ArrayList;
 public interface UserService extends SuperService {
 
     String authenticateUser(String username, String password) throws Exception;
+
     public boolean saveUser(UserDTO userDTO) throws Exception;
-    ArrayList<UserDTO> getAllUsers() ;
+
+    ArrayList<UserDTO> getAllUsers();
+
     boolean updateUser(UserDTO userDTO);
+
     String generateNextUserId();
+
     User searchUserByUsername(String searchUsername);
+
     boolean deleteUser(String userId);
 }

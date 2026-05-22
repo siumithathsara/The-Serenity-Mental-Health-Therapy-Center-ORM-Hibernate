@@ -12,11 +12,11 @@ public interface TherapistService extends SuperService {
 
     public String generateNextCustomerId() throws Exception, ClassNotFoundException, SQLException;
 
-    public List<TherapistDTO> getAllTherapists(String programId) throws  Exception;
+    public List<TherapistDTO> getAllTherapists(String programId) throws Exception;
 
-    public TherapistDTO searchTherapist(String id) throws  Exception;
+    public TherapistDTO searchTherapist(String id) throws Exception;
 
-    public boolean updateTherapist(TherapistDTO therapistDTO) throws  Exception;
+    public boolean updateTherapist(TherapistDTO therapistDTO) throws Exception;
 
-    public boolean deleteTherapist(String therapistId) throws   Exception;
+    public boolean deleteTherapist(String therapistId) throws Exception;
 }

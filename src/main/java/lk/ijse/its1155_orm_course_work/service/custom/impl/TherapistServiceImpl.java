@@ -16,46 +16,47 @@ import java.util.List;
 public class TherapistServiceImpl implements TherapistService {
 
     private final TherapistDAO therapistDAO = (TherapistDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.THERAPIST);
+
     @Override
     public boolean saveTherapist(TherapistDTO therapistDTO) throws Exception {
 
 
-            Session session = FactoryConfiguration.getInstance().getSession();
-            Transaction transaction = null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = null;
 
-            try {
-                transaction = session.beginTransaction();
+        try {
+            transaction = session.beginTransaction();
 
 
-                Therapist therapist = new Therapist();
-                therapist.setId(therapistDTO.getId());
-                therapist.setName(therapistDTO.getName());
-                therapist.setSpecialization(therapistDTO.getSpecialization());
-                therapist.setStatus(therapistDTO.getStatus());
-                therapist.setPhone(therapistDTO.getPhone());
-                therapist.setEmail(therapistDTO.getEmail());
-                therapist.setWorkingDays(therapistDTO.getWorkingDays()); // List<String> එක කෙලින්ම සෙට් කරගත හැක
+            Therapist therapist = new Therapist();
+            therapist.setId(therapistDTO.getId());
+            therapist.setName(therapistDTO.getName());
+            therapist.setSpecialization(therapistDTO.getSpecialization());
+            therapist.setStatus(therapistDTO.getStatus());
+            therapist.setPhone(therapistDTO.getPhone());
+            therapist.setEmail(therapistDTO.getEmail());
+            therapist.setWorkingDays(therapistDTO.getWorkingDays());
 
-                boolean isSaved = therapistDAO.save(therapist);
+            boolean isSaved = therapistDAO.save(therapist);
 
-                if (isSaved) {
-                    transaction.commit();
-                    return true;
-                } else {
-                    transaction.rollback();
-                    return false;
-                }
-
-            } catch (Exception e) {
-                if (transaction != null) {
-                    transaction.rollback();
-                }
-                e.printStackTrace();
-                throw e;
-            } finally {
-                session.close();
+            if (isSaved) {
+                transaction.commit();
+                return true;
+            } else {
+                transaction.rollback();
+                return false;
             }
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw e;
+        } finally {
+            session.close();
         }
+    }
 
     @Override
     public String generateNextCustomerId() throws Exception, ClassNotFoundException, SQLException {

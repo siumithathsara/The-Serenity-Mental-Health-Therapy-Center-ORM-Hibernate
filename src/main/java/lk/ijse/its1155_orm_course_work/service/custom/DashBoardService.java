@@ -7,6 +7,8 @@ import java.sql.SQLException;
 public interface DashBoardService extends SuperService {
 
     long getPatientCount() throws SQLException;
-    long getTodaySessionCount()throws SQLException;
+
+    long getTodaySessionCount() throws SQLException;
+
     Double getMonthlyRevenue() throws SQLException;
 }

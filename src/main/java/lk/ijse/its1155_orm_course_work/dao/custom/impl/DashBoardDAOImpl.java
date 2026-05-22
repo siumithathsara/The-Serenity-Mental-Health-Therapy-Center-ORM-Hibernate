@@ -2,7 +2,6 @@ package lk.ijse.its1155_orm_course_work.dao.custom.impl;
 
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.custom.DashBoardDAO;
-import lk.ijse.its1155_orm_course_work.service.SuperService;
 import org.hibernate.Session;
 
 import java.sql.SQLException;

@@ -21,41 +21,29 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
+    private final DashBoardService dashBoardService = (DashBoardService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.DASHBOARD);
     @FXML
     private AnchorPane mainPage;
-
     @FXML
     private AnchorPane majorPage;
-
     @FXML
     private Label lblDate;
-
     @FXML
     private Label lblTime;
-
     @FXML
     private Button programPageBtn;
-
     @FXML
     private Button therapistPageBtn;
-
     @FXML
     private Button userPageBtn;
-
     @FXML
     private Label lblPatientCount;
-
     @FXML
     private Label lblRevenue;
-
     @FXML
     private Label lblSessionCount;
-
     @FXML
     private Label lblUserRole;
-
-
-    private final DashBoardService dashBoardService = (DashBoardService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.DASHBOARD);
     private String loggedInRole;
     private String currentRole;
 
@@ -70,11 +58,14 @@ public class DashboardController implements Initializable {
         boolean isAdmin = "Admin".equalsIgnoreCase(role);
 
         if (isAdmin) {
-           therapistPageBtn.setDisable(false);
-            programPageBtn.setDisable(false);;
-            userPageBtn.setDisable(false);;
+            therapistPageBtn.setDisable(false);
+            programPageBtn.setDisable(false);
+            ;
+            userPageBtn.setDisable(false);
+            ;
         } else {
-            therapistPageBtn.setDisable(true);;
+            therapistPageBtn.setDisable(true);
+            ;
             programPageBtn.setDisable(true);
             userPageBtn.setDisable(true);
         }
@@ -132,6 +123,7 @@ public class DashboardController implements Initializable {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("/view/Dashboard.fxml"));
         majorPage.getChildren().setAll(pane);
     }
+
     @FXML
     void logoutBtn(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to logout?", ButtonType.YES, ButtonType.NO);
@@ -223,7 +215,6 @@ public class DashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     private void loadDashboardData() {
         try {

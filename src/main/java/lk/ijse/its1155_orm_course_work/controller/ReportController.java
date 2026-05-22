@@ -13,7 +13,6 @@ import lk.ijse.its1155_orm_course_work.dto.tm.FinancialTM;
 import lk.ijse.its1155_orm_course_work.dto.tm.TherapistPerformanceTM;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.ReportService;
-import lk.ijse.its1155_orm_course_work.service.custom.impl.ReportServiceImpl;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class ReportController implements Initializable {
 
-    private final ReportService reportService =(ReportService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.REPORT);
+    private final ReportService reportService = (ReportService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.REPORT);
     @FXML
     private AnchorPane reportsPage;
     @FXML
@@ -88,7 +87,7 @@ public class ReportController implements Initializable {
                     updateFinancialSection(monthNumber);
                 }
             });
-    }
+        }
     }
 
     private void setupTableColumns() {
@@ -136,6 +135,7 @@ public class ReportController implements Initializable {
             updateFinancialSection(monthNumber);
         }
     }
+
     public void setUserRole(String role) {
         this.userRole = role;
         checkUserAccess();

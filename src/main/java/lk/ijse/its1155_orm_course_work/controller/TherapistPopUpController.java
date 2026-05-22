@@ -23,43 +23,30 @@ import java.util.ResourceBundle;
 
 public class TherapistPopUpController implements Initializable {
 
+    private final ObservableList<TherapistTM> masterDataList = FXCollections.observableArrayList();
+    private final TherapistService therapistService = (TherapistService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPIST);
     @FXML
     private ComboBox<String> cmbFilterDay;
-
     @FXML
     private TableColumn<TherapistTM, String> colDay;
-
     @FXML
     private TableColumn<TherapistTM, String> colId;
-
     @FXML
     private TableColumn<TherapistTM, String> colName;
-
     @FXML
     private TableColumn<TherapistTM, String> colPhone;
-
     @FXML
     private TableColumn<TherapistTM, String> colSpecialization;
-
     @FXML
     private TableColumn<TherapistTM, String> colStatus;
-
     @FXML
     private TableView<TherapistTM> tblTherapists;
-
     @FXML
     private AnchorPane therapistViewPage;
-
     @FXML
     private TextField txtSearch;
-
-    private final ObservableList<TherapistTM> masterDataList = FXCollections.observableArrayList();
     private FilteredList<TherapistTM> filteredDataList;
-
     private String programId;
-
-    private final TherapistService therapistService = (TherapistService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPIST);
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

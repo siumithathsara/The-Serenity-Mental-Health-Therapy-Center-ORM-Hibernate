@@ -28,7 +28,6 @@ import lk.ijse.its1155_orm_course_work.service.custom.TherapistService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapyProgramingService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -42,84 +41,62 @@ public class TherapySessionController implements Initializable {
     private final PatientService patientService = (PatientService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.PATIENT);
     private final TherapistService therapistService = (TherapistService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPIST);
     private final TherapyProgramingService programService = (TherapyProgramingService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_PROGRAM);
-    private final TherapySessionService sessionService = (TherapySessionService)  ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
-
-    @FXML
-    private Button btnBook;
-
-    @FXML
-    private Button btnCancel;
-
-    @FXML
-    private Button btnReschedule;
-
-    @FXML
-    private ComboBox<String> cmbProgram;
-
-    @FXML
-    private ComboBox<String> cmbStatus;
-
-    @FXML
-    private ComboBox<String> cmbStatus1;
-
-    @FXML
-    private ComboBox<String> cmbTherapist;
-
-    @FXML
-    private ComboBox<String> cmbTimeSlot;
-
-    @FXML
-    private TableColumn<?, ?> colDateTime;
-
-    @FXML
-    private TableColumn<?, ?> colId;
-
-    @FXML
-    private TableColumn<?, ?> colPatient;
-
-    @FXML
-    private TableColumn<?, ?> colProgram;
-
-    @FXML
-    private TableColumn<?, ?> colStatus;
-
-    @FXML
-    private TableColumn<?, ?> colTherapist;
-
-    @FXML
-    private DatePicker dpFilterDate;
-
-    @FXML
-    private DatePicker dpSessionDate;
-
-    @FXML
-    private AnchorPane schedulingPage;
-
-    @FXML
-    private TableView<TherapySessionDTO> tblAppointments;
-
-    @FXML
-    private TextField txtAppointmentId;
-
-    @FXML
-    private TextField txtPatientName;
-
-    @FXML
-    private TextField txtSearch;
-
+    private final TherapySessionService sessionService = (TherapySessionService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
     private final ObservableList<String> statusList = FXCollections.observableArrayList("PENDING", "CONFIRMED");
     private final ObservableList<String> timeSlots = FXCollections.observableArrayList(
-               "        08:00 AM - 09:00 AM" ,
-                    "        09:00 AM - 10:00 AM" ,
-                    "        10:00 AM - 11:00 AM" ,
-                    "        11:00 AM - 12:00 PM" ,
-                    "        01:00 PM - 02:00 PM" ,
-                    "        02:00 PM - 03:00 PM" ,
-                    "        03:00 PM - 04:00 PM" ,
-                    "        04:00 PM - 05:00 PM" ,
-                    "        05:00 PM - 06:00 PM" ,
-                    "        06:00 PM - 07:00 PM"
+            "        08:00 AM - 09:00 AM",
+            "        09:00 AM - 10:00 AM",
+            "        10:00 AM - 11:00 AM",
+            "        11:00 AM - 12:00 PM",
+            "        01:00 PM - 02:00 PM",
+            "        02:00 PM - 03:00 PM",
+            "        03:00 PM - 04:00 PM",
+            "        04:00 PM - 05:00 PM",
+            "        05:00 PM - 06:00 PM",
+            "        06:00 PM - 07:00 PM"
     );
+    @FXML
+    private Button btnBook;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnReschedule;
+    @FXML
+    private ComboBox<String> cmbProgram;
+    @FXML
+    private ComboBox<String> cmbStatus;
+    @FXML
+    private ComboBox<String> cmbStatus1;
+    @FXML
+    private ComboBox<String> cmbTherapist;
+    @FXML
+    private ComboBox<String> cmbTimeSlot;
+    @FXML
+    private TableColumn<?, ?> colDateTime;
+    @FXML
+    private TableColumn<?, ?> colId;
+    @FXML
+    private TableColumn<?, ?> colPatient;
+    @FXML
+    private TableColumn<?, ?> colProgram;
+    @FXML
+    private TableColumn<?, ?> colStatus;
+    @FXML
+    private TableColumn<?, ?> colTherapist;
+    @FXML
+    private DatePicker dpFilterDate;
+    @FXML
+    private DatePicker dpSessionDate;
+    @FXML
+    private AnchorPane schedulingPage;
+    @FXML
+    private TableView<TherapySessionDTO> tblAppointments;
+    @FXML
+    private TextField txtAppointmentId;
+    @FXML
+    private TextField txtPatientName;
+    @FXML
+    private TextField txtSearch;
     private List<TherapistDTO> currentTherapistList = new ArrayList<>();
     private List<String> bookedSlotsList = new ArrayList<>();
 
@@ -257,8 +234,7 @@ public class TherapySessionController implements Initializable {
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
                             setStyle("-fx-background-color: #eeeeee;");
-                        }
-                        else {
+                        } else {
                             String fullDayName = item.getDayOfWeek().toString().toLowerCase();
                             String shortDayName = fullDayName.substring(0, 3);
 
@@ -327,7 +303,7 @@ public class TherapySessionController implements Initializable {
     }
 
 
-    private void generateNewId(){
+    private void generateNewId() {
         try {
             String nextId = sessionService.generateNextSessionId();
             txtAppointmentId.setText(nextId);
@@ -348,8 +324,6 @@ public class TherapySessionController implements Initializable {
         LocalDate sessionDate = dpSessionDate.getValue();
         String timeSlot = cmbTimeSlot.getSelectionModel().getSelectedItem();
         String status = cmbStatus.getSelectionModel().getSelectedItem();
-
-
 
 
         if (appointmentId.isEmpty() ||
@@ -435,7 +409,7 @@ public class TherapySessionController implements Initializable {
         cmbStatus.getSelectionModel().clearSelection();
     }
 
-    private void loadSessionTable(){
+    private void loadSessionTable() {
         try {
 
             List<TherapySessionDTO> sessionList = sessionService.getAllSession();
@@ -542,7 +516,7 @@ public class TherapySessionController implements Initializable {
 
     @FXML
     void handleSessionReset(ActionEvent event) {
-          clearFields();
+        clearFields();
     }
 
     @FXML

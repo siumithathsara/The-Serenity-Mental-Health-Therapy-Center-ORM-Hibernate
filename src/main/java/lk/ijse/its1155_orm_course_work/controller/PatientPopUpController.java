@@ -10,20 +10,30 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.its1155_orm_course_work.dto.tm.PatientHistoryTM;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class PatientPopUpController {
 
-    @FXML private Label lblName;
-    @FXML private Label lblNic;
-    @FXML private Label lblPhone;
-    @FXML private Button btnPrint;
-    @FXML private TableView<PatientHistoryTM> tblHistory;
-    @FXML private TableColumn<PatientHistoryTM, LocalDate> colDate;
-    @FXML private TableColumn<PatientHistoryTM, String> colProgram;
-    @FXML private TableColumn<PatientHistoryTM, String> colTherapist;
-    @FXML private TableColumn<PatientHistoryTM, String> colStatus;
+    @FXML
+    private Label lblName;
+    @FXML
+    private Label lblNic;
+    @FXML
+    private Label lblPhone;
+    @FXML
+    private Button btnPrint;
+    @FXML
+    private TableView<PatientHistoryTM> tblHistory;
+    @FXML
+    private TableColumn<PatientHistoryTM, LocalDate> colDate;
+    @FXML
+    private TableColumn<PatientHistoryTM, String> colProgram;
+    @FXML
+    private TableColumn<PatientHistoryTM, String> colTherapist;
+    @FXML
+    private TableColumn<PatientHistoryTM, String> colStatus;
 
     public void initialize() {
 

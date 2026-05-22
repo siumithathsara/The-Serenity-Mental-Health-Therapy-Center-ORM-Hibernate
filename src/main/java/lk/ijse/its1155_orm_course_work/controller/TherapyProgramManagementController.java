@@ -74,16 +74,16 @@ public class TherapyProgramManagementController implements Initializable {
     private TextField txtSearch;
 
 
-@Override
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-    colName.setCellValueFactory(new PropertyValueFactory<>("programName"));
-    colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
-    colFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("programName"));
+        colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        colFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
 
-    generateProgramId();
-    loadProgramTable();
+        generateProgramId();
+        loadProgramTable();
 
     }
 
@@ -134,7 +134,7 @@ public class TherapyProgramManagementController implements Initializable {
         }
     }
 
-    private void generateProgramId(){
+    private void generateProgramId() {
 
         try {
             String nextId = therapyProgramingService.generateNextCustomerId();
@@ -145,7 +145,7 @@ public class TherapyProgramManagementController implements Initializable {
         }
     }
 
-    private void loadProgramTable(){
+    private void loadProgramTable() {
         try {
 
             List<TherapyProgramDTO> programDTOList = therapyProgramingService.getPrograms();
@@ -162,18 +162,18 @@ public class TherapyProgramManagementController implements Initializable {
         }
     }
 
-    private void clearField(){
-    txtProgramName.setText("");
-    txtDuration.setText("");
-    txtFee.setText("");
-    txtProgramName.setText("");
-    txtDescription.setText("");
+    private void clearField() {
+        txtProgramName.setText("");
+        txtDuration.setText("");
+        txtFee.setText("");
+        txtProgramName.setText("");
+        txtDescription.setText("");
     }
 
     @FXML
     void handleResetBtn(ActionEvent event) {
 
-    clearField();
+        clearField();
     }
 
     @FXML
@@ -233,7 +233,7 @@ public class TherapyProgramManagementController implements Initializable {
 
                 double fee = Double.parseDouble(feeStr);
 
-                TherapyProgramDTO programDTO = new TherapyProgramDTO(id, programName, duration,  fee,description);
+                TherapyProgramDTO programDTO = new TherapyProgramDTO(id, programName, duration, fee, description);
 
                 boolean result = therapyProgramingService.updateProgram(programDTO);
 

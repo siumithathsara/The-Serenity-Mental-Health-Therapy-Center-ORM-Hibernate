@@ -2,7 +2,6 @@ package lk.ijse.its1155_orm_course_work.dao.custom.impl;
 
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapyProgramDAO;
-import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.entity.TherapyProgram;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

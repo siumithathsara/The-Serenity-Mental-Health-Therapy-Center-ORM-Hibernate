@@ -11,11 +11,18 @@ import java.util.List;
 public interface PatientService extends SuperService {
 
     public boolean savePatient(PatientDTO patientDTO) throws Exception;
+
     public String generateNextCustomerId() throws Exception;
-    public  List<PatientDTO> getPatients() throws SQLException, ClassNotFoundException;
+
+    public List<PatientDTO> getPatients() throws SQLException, ClassNotFoundException;
+
     public boolean updatePatient(PatientDTO patientDTO) throws Exception;
+
     public PatientDTO searchPatient(String id) throws SQLException, ClassNotFoundException;
+
     public boolean deleteCustomer(String patientId) throws SQLException, ClassNotFoundException;
+
     public Patient searchPatientByName(String name) throws Exception;
+
     public List<PatientHistoryTM> getPatientHistory(String patientId) throws Exception;
 }

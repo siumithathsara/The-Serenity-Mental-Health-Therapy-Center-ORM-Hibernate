@@ -12,12 +12,18 @@ import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
 import java.util.List;
 
 public class TherapistSchedulePopUpController {
-    @FXML private Label lblDocName;
-    @FXML private Label lblSpecialization;
-    @FXML private Label lblTotalSessions;
-    @FXML private TableView<TherapyScheduleTM> tblDoctorSchedule;
-    @FXML private TableColumn<TherapyScheduleTM, String> colTime;
-    @FXML private TableColumn<TherapyScheduleTM, String> colPatient;
+    @FXML
+    private Label lblDocName;
+    @FXML
+    private Label lblSpecialization;
+    @FXML
+    private Label lblTotalSessions;
+    @FXML
+    private TableView<TherapyScheduleTM> tblDoctorSchedule;
+    @FXML
+    private TableColumn<TherapyScheduleTM, String> colTime;
+    @FXML
+    private TableColumn<TherapyScheduleTM, String> colPatient;
     @FXML
     private TableColumn<TherapyScheduleTM, String> colStatus;
 

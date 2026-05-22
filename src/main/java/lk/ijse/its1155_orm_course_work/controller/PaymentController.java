@@ -11,7 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDTO;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDetailsDTO;
 import lk.ijse.its1155_orm_course_work.dto.tm.PaymentTM;
-import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PaymentService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
@@ -30,7 +29,7 @@ import java.util.ResourceBundle;
 public class PaymentController implements Initializable {
 
     private final PaymentService paymentService = (PaymentService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.PAYMENT);
-    private final TherapySessionService sessionService = (TherapySessionService)  ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
+    private final TherapySessionService sessionService = (TherapySessionService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
     private ObservableList<PaymentTM> paymentList = FXCollections.observableArrayList();
 
     @FXML
@@ -123,7 +122,7 @@ public class PaymentController implements Initializable {
 
     @FXML
     void handleClearPayment(ActionEvent event) {
-           clearFields();
+        clearFields();
     }
 
     private void clearFields() {
@@ -134,7 +133,7 @@ public class PaymentController implements Initializable {
         txtAmount.clear();
     }
 
-    private void generatePaymentId(){
+    private void generatePaymentId() {
         try {
             String nextId = paymentService.generateNextPaymentId();
             txtInvoiceNo.setText(nextId);
@@ -246,7 +245,7 @@ public class PaymentController implements Initializable {
 
                     Map<String, Object> parameters = new HashMap<>();
                     parameters.put("paymentId", invoiceNo);
-                    parameters.put("patientName", Patient.class.getName());
+                    parameters.put("patientName", txtPatientName.getText());
                     parameters.put("amount", Double.parseDouble(amountStr));
                     parameters.put("currentDate", new java.util.Date());
 
@@ -270,7 +269,7 @@ public class PaymentController implements Initializable {
         }
     }
 
-    private void loadPaymentTable(){
+    private void loadPaymentTable() {
         paymentList.clear();
         try {
             List<PaymentDTO> allPayments = paymentService.getAllPayments();

@@ -23,6 +23,7 @@ public class HelloApplication extends Application {
         stage.show();
 
     }
+
     private void initializeDefaultUser() {
         UserDAO userDAO = new UserDAOImpl();
 

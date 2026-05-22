@@ -167,6 +167,7 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
 
         return bookedSlots;
     }
+
     @Override
     public boolean save(TherapySession entity, Session session) throws Exception {
         session.persist(entity);
