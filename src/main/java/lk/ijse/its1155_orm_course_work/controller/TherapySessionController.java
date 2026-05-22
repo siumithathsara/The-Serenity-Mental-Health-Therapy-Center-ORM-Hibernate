@@ -326,9 +326,10 @@ public class TherapySessionController implements Initializable {
         }
     }
 
+
     private void generateNewId(){
         try {
-            String nextId = sessionService.generateNextCustomerId();
+            String nextId = sessionService.generateNextSessionId();
             txtAppointmentId.setText(nextId);
         } catch (Exception e) {
             e.printStackTrace();

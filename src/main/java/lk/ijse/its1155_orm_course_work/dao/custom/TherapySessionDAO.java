@@ -16,4 +16,6 @@ public interface TherapySessionDAO extends CrudDAO<TherapySession> {
     public Therapist getTherapistByName(String name, Session session);
     public boolean isSlotBookedForUpdate(String therapistId, LocalDate date, String time, String apptId) throws Exception;
     public List<TherapySession> getTodaySessionsByTherapist(String therapistId, Session session);
+    TherapySession loadDetails(String id) throws Exception;
+    List<String> getAllSessionIds() throws Exception;
 }

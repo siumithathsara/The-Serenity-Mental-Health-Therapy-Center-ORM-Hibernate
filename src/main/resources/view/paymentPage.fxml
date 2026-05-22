@@ -55,7 +55,7 @@
                                 <VBox spacing="2.0">
                                     <children>
                                         <Label text="Appointment ID" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                        <ComboBox fx:id="cmbPaymentMethod" maxWidth="Infinity" prefHeight="35.0" promptText="Select Appoinment ID" style="-fx-background-radius: 8;" />
+                                        <ComboBox fx:id="cmbPaymentMethod" maxWidth="Infinity" onAction="#loadSessionDetails" prefHeight="35.0" promptText="Select Appoinment ID" style="-fx-background-radius: 8;" />
                                     </children>
                                 </VBox>
 
@@ -66,10 +66,16 @@
                                     </children>
                                 </VBox>
 
-                                <VBox spacing="2.0">
+                                <VBox prefHeight="118.0" prefWidth="370.0" spacing="2.0">
                                     <children>
-                                        <Label text="Amount (LKR)" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
-                                        <TextField fx:id="txtAmount" editable="false" prefHeight="35.0" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6; -fx-text-fill: #C0392B; -fx-font-weight: bold;" />
+                                        <Label text="Therapist Name" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="11.0" /></font></Label>
+                                        <TextField fx:id="txtTherapist" editable="false" prefHeight="35.0" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6; -fx-text-fill: #C0392B; -fx-font-weight: bold;" />
+                              <Label text="Amount (LKR)" textFill="#7F8C8D">
+                                 <font>
+                                    <Font name="Segoe UI Semibold" size="11.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtAmount" editable="false" prefHeight="35.0" style="-fx-background-radius: 8; -fx-background-color: #f1f2f6; -fx-text-fill: #C0392B; -fx-font-weight: bold;" />
                                     </children>
                                 </VBox>
 
@@ -87,7 +93,7 @@
                                 <Button fx:id="btnProcess" maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Process &amp; Print Invoice" textFill="WHITE">
                                     <font><Font name="Segoe UI Bold" size="15.0" /></font>
                                 </Button>
-                                <Button fx:id="btnClear" maxWidth="Infinity" prefHeight="35.0" style="-fx-background-color: #7F8C8D; -fx-background-radius: 8; -fx-cursor: hand;" text="Clear Fields" textFill="WHITE">
+                                <Button fx:id="btnClear" maxWidth="Infinity" onAction="#handleClearPayment" prefHeight="35.0" style="-fx-background-color: #7F8C8D; -fx-background-radius: 8; -fx-cursor: hand;" text="Clear Fields" textFill="WHITE">
                                     <font><Font name="Segoe UI Bold" size="12.0" /></font>
                                 </Button>
                             </children>

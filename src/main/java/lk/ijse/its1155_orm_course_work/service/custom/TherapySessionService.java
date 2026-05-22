@@ -1,5 +1,6 @@
 package lk.ijse.its1155_orm_course_work.service.custom;
 
+import lk.ijse.its1155_orm_course_work.dto.PaymentDetailsDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
 import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
 import lk.ijse.its1155_orm_course_work.entity.Therapist;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface TherapySessionService extends SuperService {
     public List<String> getBookedTimeSlots(String therapistId, LocalDate selectedDate) throws Exception;
 
-    public String generateNextCustomerId() throws Exception;
+    public String generateNextSessionId() throws Exception;
 
     public boolean bookSession(TherapySessionDTO sessionDTO) throws  Exception;
 
@@ -30,4 +31,8 @@ public interface TherapySessionService extends SuperService {
     public Therapist getTherapistDetails(String name) throws Exception;
 
     public List<TherapyScheduleTM> getTodayDoctorSchedule(String therapistId) throws Exception;
+
+    List<String> getAllSessionId() throws Exception;
+
+    PaymentDetailsDTO getSessionDetailsForPayment(String selectedSessionId) throws Exception;
 }

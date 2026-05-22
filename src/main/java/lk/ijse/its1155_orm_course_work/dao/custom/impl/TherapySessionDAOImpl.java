@@ -236,4 +236,24 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
                 .setParameter("today", LocalDate.now())
                 .getResultList();
     }
+
+    @Override
+    public TherapySession loadDetails(String id) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            return session.get(TherapySession.class, id);
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public List<String> getAllSessionIds() throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            return session.createQuery("SELECT s.appointmentId FROM TherapySession s", String.class).list();
+        } finally {
+            session.close();
+        }
+    }
 }

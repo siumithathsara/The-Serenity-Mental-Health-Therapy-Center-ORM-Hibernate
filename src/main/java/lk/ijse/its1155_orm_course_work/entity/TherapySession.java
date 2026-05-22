@@ -18,13 +18,13 @@ public class TherapySession {
     private String appointmentId;
 
     @Column(name = "status", length = 30, nullable = false)
-    private String status; // e.g., PENDING, CONFIRMED, CANCELLED
+    private String status;
 
     @Column(name = "session_date", nullable = false)
     private LocalDate sessionDate;
 
     @Column(name = "time_slot", length = 50, nullable = false)
-    private String timeSlot; // e.g., "09:00 AM - 10:00 AM"
+    private String timeSlot;
 
     // Foreign Key Relationships
     @ManyToOne(fetch = FetchType.EAGER)
@@ -38,4 +38,6 @@ public class TherapySession {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "therapist_id", nullable = false)
     private Therapist therapist;
+
+    
 }

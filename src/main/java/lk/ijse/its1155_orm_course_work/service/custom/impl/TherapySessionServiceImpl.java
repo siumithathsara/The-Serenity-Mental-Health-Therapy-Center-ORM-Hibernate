@@ -6,6 +6,7 @@ import lk.ijse.its1155_orm_course_work.dao.custom.PatientDAO;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapistDAO;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapyProgramDAO;
 import lk.ijse.its1155_orm_course_work.dao.custom.TherapySessionDAO;
+import lk.ijse.its1155_orm_course_work.dto.PaymentDetailsDTO;
 import lk.ijse.its1155_orm_course_work.dto.TherapySessionDTO;
 import lk.ijse.its1155_orm_course_work.dto.tm.TherapyScheduleTM;
 import lk.ijse.its1155_orm_course_work.entity.Patient;
@@ -32,7 +33,7 @@ public class TherapySessionServiceImpl implements TherapySessionService {
     }
 
     @Override
-    public String generateNextCustomerId() throws Exception {
+    public String generateNextSessionId() throws Exception {
         return therapySessionDAO.generateNextId();
     }
 
@@ -190,6 +191,26 @@ public class TherapySessionServiceImpl implements TherapySessionService {
             }
         }
         return tmList;
+    }
+
+    @Override
+    public List<String> getAllSessionId() throws Exception {
+        return therapySessionDAO.getAllSessionIds();
+    }
+
+    @Override
+    public PaymentDetailsDTO getSessionDetailsForPayment(String id) throws Exception {
+        TherapySession session = therapySessionDAO.loadDetails(id);
+
+        if (session != null) {
+
+            return new PaymentDetailsDTO(
+                    session.getPatient().getName(),
+                    session.getTherapist().getName(),
+                    session.getProgram().getFee()
+            );
+        }
+        return null;
     }
 
 }

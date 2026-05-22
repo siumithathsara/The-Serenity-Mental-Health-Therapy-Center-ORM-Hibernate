@@ -10,7 +10,6 @@ module lk.ijse.its1155_orm_course_work {
     requires javafx.graphics;
 
 
-
     opens lk.ijse.its1155_orm_course_work to javafx.fxml;
     opens lk.ijse.its1155_orm_course_work.dto to javafx.base, javafx.fxml, org.hibernate.orm.core;
     opens lk.ijse.its1155_orm_course_work.controller to javafx.fxml;
