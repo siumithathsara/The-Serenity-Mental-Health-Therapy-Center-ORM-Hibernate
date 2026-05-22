@@ -17,7 +17,7 @@ public class DAOFactory {
         REPORT,
         PAYMENT,
         THERAPIST,
-        THERAPIST_AVAILABILITY,
+        DASHBOARD,
         THERAPIST_PROGRAM,
         THERAPY_PROGRAM,
         THERAPY_SESSION,
@@ -34,8 +34,8 @@ public class DAOFactory {
                 return new PaymentDAOImpl();
             case THERAPIST:
                return new TherapistDAOImpl();
-            case THERAPIST_AVAILABILITY:
-//                return new TherapistAvailabilityDAOImpl();
+            case DASHBOARD:
+               return new DashBoardDAOImpl();
             case THERAPIST_PROGRAM:
 //                return new TherapistProgramDAOImpl();
             case THERAPY_PROGRAM:

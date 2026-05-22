@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
+import lk.ijse.its1155_orm_course_work.service.custom.DashBoardService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,13 +42,29 @@ public class DashboardController implements Initializable {
     @FXML
     private Button userPageBtn;
 
+    @FXML
+    private Label lblPatientCount;
 
+    @FXML
+    private Label lblRevenue;
+
+    @FXML
+    private Label lblSessionCount;
+
+    @FXML
+    private Label lblUserRole;
+
+
+    private final DashBoardService dashBoardService = (DashBoardService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.DASHBOARD);
 
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println("Service object: " + dashBoardService);
         updateDateTime();
+        loadDashboardData();
     }
 
     public void setUserRole(String role) {
+        lblUserRole.setText(role);
         boolean isAdmin = "Admin".equalsIgnoreCase(role);
 
         if (isAdmin) {
@@ -204,5 +222,15 @@ public class DashboardController implements Initializable {
         }
     }
 
+    private void loadDashboardData() {
+        try {
+            lblPatientCount.setText(String.valueOf(dashBoardService.getPatientCount()));
+            lblSessionCount.setText(String.valueOf(dashBoardService.getTodaySessionCount()));
+            Double revenue = (double) dashBoardService.getMonthlyRevenue();
+            lblRevenue.setText(String.format("LKR %,.2f", (revenue != null ? revenue : 0.0)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

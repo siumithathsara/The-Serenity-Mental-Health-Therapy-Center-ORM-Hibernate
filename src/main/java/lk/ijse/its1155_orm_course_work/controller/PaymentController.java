@@ -16,6 +16,7 @@ import lk.ijse.its1155_orm_course_work.service.custom.PaymentService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -98,6 +99,7 @@ public class PaymentController implements Initializable {
         generatePaymentId();
         clearFields();
         loadPaymentTable();
+        loadAppointmentIds();
 
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             searchPatientPayments(newValue);
@@ -291,5 +293,14 @@ public class PaymentController implements Initializable {
         tblPayments.setItems(filteredList);
     }
 
+    private void loadAppointmentIds() {
+        try {
+            List<String> ids = paymentService.getPendingAppointmentIds();
+            cmbPaymentMethod.getItems().clear();
+            cmbPaymentMethod.getItems().addAll(ids);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Error loading IDs!").show();
+        }
+    }
 
 }

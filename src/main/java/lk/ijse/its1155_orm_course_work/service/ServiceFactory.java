@@ -17,7 +17,7 @@ public class ServiceFactory {
         REPORT,
         PAYMENT,
         THERAPIST,
-        THERAPIST_AVAILABILITY,
+        DASHBOARD,
         THERAPIST_PROGRAM,
         THERAPY_PROGRAM,
         THERAPY_SESSION,
@@ -34,8 +34,8 @@ public class ServiceFactory {
                return new PaymentServiceImpl();
             case THERAPIST:
                 return new TherapistServiceImpl();
-            case THERAPIST_AVAILABILITY:
-//                return new TherapistAvailabilityBOImpl();
+            case DASHBOARD:
+                return new DashBoardServiceImpl();
             case THERAPIST_PROGRAM:
 //                return new TherapistProgramBOImpl();
             case THERAPY_PROGRAM:

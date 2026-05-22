@@ -81,7 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
             dto.setMethod(payment.getMethod());
             dto.setDate(payment.getDate());
 
-            // 🌟 Entity එකෙන් values අරන් DTO එකේ String fields වලට දානවා
+
             if (payment.getTherapySession() != null) {
                 dto.setAppointmentId(payment.getTherapySession().getAppointmentId());
                 if (payment.getTherapySession().getPatient() != null) {
@@ -92,6 +92,11 @@ public class PaymentServiceImpl implements PaymentService {
             dtoList.add(dto);
         }
         return dtoList;
+    }
+
+    @Override
+    public List<String> getPendingAppointmentIds() throws SQLException {
+        return paymentDAO.getPendingAppointmentIds();
     }
 
 }

@@ -11,4 +11,6 @@ public interface PaymentDAO extends CrudDAO<Payment> {
     public boolean save(Payment entity, Session session) throws Exception;
 
     List<Payment> getAllPayments() throws PaymentProcessingException;
+
+    public List<String> getPendingAppointmentIds();
 }

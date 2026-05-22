@@ -96,4 +96,17 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
 
+    public List<String> getPendingAppointmentIds() {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            String hql = "SELECT t.appointmentId FROM TherapySession t " +
+                    "WHERE t.appointmentId NOT IN (SELECT p.therapySession.appointmentId FROM Payment p)";
+
+            List<String> list = session.createQuery(hql, String.class).getResultList();
+            return list;
+        } finally {
+            session.close();
+        }
+    }
+
 }

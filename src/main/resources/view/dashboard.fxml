@@ -53,7 +53,7 @@
                             <children>
                                 <VBox alignment="CENTER_RIGHT">
                                     <children>
-                                        <Label text="Admin" textFill="WHITE">
+                                        <Label fx:id="lblUserRole" text="Admin" textFill="WHITE">
                                             <font><Font name="Segoe UI Bold" size="14.0" /></font>
                                         </Label>
                                         <Label textFill="#3498DB">
@@ -96,7 +96,7 @@
                                 <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label text="Total Patients" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="15.0" /></font></Label>
-                                        <Label text="3,120" textFill="#1A5276"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
+                                        <Label fx:id="lblPatientCount" text="3,120" textFill="#1A5276"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
                                     </children>
                                 </VBox>
                             </children>
@@ -106,7 +106,7 @@
                                 <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label text="Today's Sessions" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="15.0" /></font></Label>
-                                        <Label text="24" textFill="#27AE60"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
+                                        <Label fx:id="lblSessionCount" text="24" textFill="#27AE60"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
                                     </children>
                                 </VBox>
                             </children>
@@ -116,7 +116,7 @@
                                 <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label text="Monthly Revenue" textFill="#7F8C8D"><font><Font name="Segoe UI Semibold" size="15.0" /></font></Label>
-                                        <Label text="LKR 450,500.00" textFill="#2980B9"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
+                                        <Label fx:id="lblRevenue" text="LKR 450,500.00" textFill="#2980B9"><font><Font name="Segoe UI Bold" size="32.0" /></font></Label>
                                     </children>
                                 </VBox>
                             </children>

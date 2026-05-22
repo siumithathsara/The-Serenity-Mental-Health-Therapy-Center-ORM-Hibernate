@@ -14,4 +14,6 @@ public interface PaymentService extends SuperService {
     boolean savePaymentAndConfirmSession(PaymentDTO paymentDTO)throws PaymentProcessingException;
 
     List<PaymentDTO> getAllPayments() throws PaymentProcessingException;
+
+    public List<String> getPendingAppointmentIds() throws SQLException;
 }
