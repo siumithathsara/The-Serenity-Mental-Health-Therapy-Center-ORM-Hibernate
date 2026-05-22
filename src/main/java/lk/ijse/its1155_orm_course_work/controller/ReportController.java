@@ -62,6 +62,8 @@ public class ReportController implements Initializable {
     @FXML
     private PieChart chartRevenue;
 
+    private String userRole;
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         initComboBox();
@@ -134,12 +136,18 @@ public class ReportController implements Initializable {
             updateFinancialSection(monthNumber);
         }
     }
+    public void setUserRole(String role) {
+        this.userRole = role;
+        checkUserAccess();
+    }
 
     private void checkUserAccess() {
-        String currentUserRole = "Admin";
-        if ("Receptionist".equalsIgnoreCase(currentUserRole)) {
+        if ("Receptionist".equalsIgnoreCase(userRole)) {
             tabAdmin.setDisable(true);
             tabPaneReports.getSelectionModel().select(tabReceptionist);
+        } else {
+            tabAdmin.setDisable(false);
+
         }
     }
 

@@ -11,14 +11,20 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDTO;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDetailsDTO;
 import lk.ijse.its1155_orm_course_work.dto.tm.PaymentTM;
+import lk.ijse.its1155_orm_course_work.entity.Patient;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PaymentService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PaymentController implements Initializable {
@@ -232,6 +238,25 @@ public class PaymentController implements Initializable {
 
             if (isSuccess) {
                 new Alert(Alert.AlertType.INFORMATION, "Payment success").show();
+                try {
+
+                    InputStream reportStream = getClass().getResourceAsStream("/report/invoice.jrxml");
+
+                    JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+
+                    Map<String, Object> parameters = new HashMap<>();
+                    parameters.put("paymentId", invoiceNo);
+                    parameters.put("patientName", Patient.class.getName());
+                    parameters.put("amount", Double.parseDouble(amountStr));
+                    parameters.put("currentDate", new java.util.Date());
+
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+                    JasperViewer.viewReport(jasperPrint, false);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Error: " + e.getMessage()).show();
+                }
                 loadPaymentTable();
                 clearFields();
                 generatePaymentId();

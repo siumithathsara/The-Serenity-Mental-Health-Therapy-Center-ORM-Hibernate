@@ -9,6 +9,8 @@ module lk.ijse.its1155_orm_course_work {
     requires javafx.base;
     requires javafx.graphics;
 
+    requires net.sf.jasperreports.core;
+
 
 
     opens lk.ijse.its1155_orm_course_work to javafx.fxml;

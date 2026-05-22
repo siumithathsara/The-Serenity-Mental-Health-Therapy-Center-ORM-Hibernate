@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="Invoice" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1f8e722a-583c-4bef-8d8d-56f38d2451a3">
+    <parameter name="paymentId" class="java.lang.String"/>
+    <parameter name="patientName" class="java.lang.String"/>
+    <parameter name="amount" class="java.lang.Double"/>
+    <parameter name="currentDate" class="java.util.Date"/>
+
+    <title height="100">
+        <element kind="rectangle" x="0" y="0" width="555" height="90" backcolor="#E6E6FA" radius="10"/>
+        <element kind="image" uuid="bdd106f8-5afc-4a04-86ee-fd748968f34e" x="10" y="10" width="70" height="70">
+            <expression><![CDATA["C:/Users/Imakshi/Music/HotelManagementSystem_ijse/src/main/resources/images/logo.png"]]></expression>
+        </element>
+        <element kind="staticText" x="90" y="10" width="200" height="30" forecolor="#4B0082" fontSize="22.0" bold="true">
+            <text><![CDATA[Serenity Center]]></text>
+        </element>
+        <element kind="staticText" x="90" y="40" width="151" height="20" fontSize="12.0" italic="true">
+            <text><![CDATA[සුවය හා සහනය]]></text>
+        </element>
+        <element kind="staticText" x="400" y="10" width="140" height="30" forecolor="#4B0082" fontSize="24.0" bold="true" hTextAlign="Right">
+            <text><![CDATA[INVOICE]]></text>
+        </element>
+        <element kind="textField" x="430" y="50" width="110" height="20" fontSize="12.0" pattern="yyyy-MM-dd" hTextAlign="Right">
+            <expression><![CDATA[$P{currentDate}]]></expression>
+        </element>
+    </title>
+
+    <detail>
+        <band height="150">
+            <element kind="rectangle" x="50" y="20" width="455" height="100" forecolor="#4B0082" radius="5"/>
+
+            <element kind="staticText" x="70" y="30" width="120" height="25" fontSize="14.0" bold="true">
+                <text><![CDATA[Payment ID :]]></text>
+            </element>
+            <element kind="textField" x="200" y="30" width="200" height="25" fontSize="14.0">
+                <expression><![CDATA[$P{paymentId}]]></expression>
+            </element>
+
+            <element kind="staticText" x="70" y="60" width="120" height="25" fontSize="14.0" bold="true">
+                <text><![CDATA[Patient Name :]]></text>
+            </element>
+            <element kind="textField" x="200" y="60" width="200" height="25" fontSize="14.0">
+                <expression><![CDATA[$P{patientName}]]></expression>
+            </element>
+
+            <element kind="staticText" x="70" y="90" width="120" height="25" fontSize="14.0" bold="true">
+                <text><![CDATA[Total Amount :]]></text>
+            </element>
+            <element kind="textField" x="200" y="90" width="200" height="25" fontSize="14.0" bold="true" forecolor="#4B0082">
+                <expression><![CDATA[$P{amount}]]></expression>
+            </element>
+        </band>
+    </detail>
+
+    <pageFooter height="40">
+        <element kind="line" x="0" y="5" width="555" height="1" forecolor="#4B0082"/>
+        <element kind="staticText" x="0" y="15" width="555" height="20" hTextAlign="Center" fontSize="10.0">
+            <text><![CDATA[Thank you for choosing Serenity Center! - Your Health is our priority.]]></text>
+        </element>
+    </pageFooter>
+</jasperReport>

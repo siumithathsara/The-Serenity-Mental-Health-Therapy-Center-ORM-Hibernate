@@ -56,6 +56,8 @@ public class DashboardController implements Initializable {
 
 
     private final DashBoardService dashBoardService = (DashBoardService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.DASHBOARD);
+    private String loggedInRole;
+    private String currentRole;
 
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("Service object: " + dashBoardService);
@@ -211,16 +213,17 @@ public class DashboardController implements Initializable {
     @FXML
     void reportPageBtn(ActionEvent event) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ReportPage.fxml"));
+            AnchorPane anchorPane = loader.load();
+            ReportController controller = loader.getController();
+            controller.setUserRole(this.loggedInRole);
             mainPage.getChildren().clear();
-            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/ReportPage.fxml"));
-            anchorPane.prefHeightProperty().bind(mainPage.heightProperty());
-            anchorPane.prefWidthProperty().bind(mainPage.widthProperty());
             mainPage.getChildren().add(anchorPane);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void loadDashboardData() {
         try {
@@ -232,5 +235,6 @@ public class DashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 }

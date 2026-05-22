@@ -33,7 +33,7 @@
             <tabs>
 
                 <!-- 👑 TAB 1: ADMIN (Therapist Performance & Stats) -->
-                <Tab fx:id="tabAdmin" text="👑 Therapist Performance (Admin)">
+                <Tab fx:id="tabAdmin" text="👑 Therapist Performance ">
                     <content>
                         <AnchorPane>
                             <children>
@@ -73,7 +73,7 @@
                 </Tab>
 
                 <!-- 💳 TAB 2: RECEPTIONIST (Financial Reports) -->
-                <Tab fx:id="tabReceptionist" text="💳 Financial Reports (Receptionist)">
+                <Tab fx:id="tabReceptionist" text="💳 Financial Reports ">
                     <content>
                         <AnchorPane>
                             <children>
