@@ -154,7 +154,7 @@
                         <Button fx:id="programPageBtn" mnemonicParsing="false" onAction="#programPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1B4F72, #2E86C1); -fx-background-radius: 18; -fx-cursor: hand;" text="📋 Therapy Programs" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font><Font name="Segoe UI Bold" size="18.0" /></font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #515A5A, #7F8C8D); -fx-background-radius: 18; -fx-cursor: hand;" text="📊 Reports &amp; Analytics" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button mnemonicParsing="false" onAction="#reportPageBtn" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #515A5A, #7F8C8D); -fx-background-radius: 18; -fx-cursor: hand;" text="📊 Reports &amp; Analytics" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <font><Font name="Segoe UI Bold" size="18.0" /></font>
                         </Button>
                     </children>

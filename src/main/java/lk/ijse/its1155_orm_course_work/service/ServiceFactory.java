@@ -14,7 +14,7 @@ public class ServiceFactory {
 
     public enum BOType {
         PATIENT,
-        PATIENT_PROGRAM,
+        REPORT,
         PAYMENT,
         THERAPIST,
         THERAPIST_AVAILABILITY,
@@ -28,8 +28,8 @@ public class ServiceFactory {
         switch (type) {
             case PATIENT:
                 return new PatientServiceImpl();
-            case PATIENT_PROGRAM:
-//                return new PatientProgramBOImpl();
+            case REPORT:
+                return new ReportServiceImpl();
             case PAYMENT:
                return new PaymentServiceImpl();
             case THERAPIST:

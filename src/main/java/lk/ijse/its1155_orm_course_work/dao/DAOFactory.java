@@ -14,7 +14,7 @@ public class DAOFactory {
 
     public enum DAOType {
         PATIENT,
-        PATIENT_PROGRAM,
+        REPORT,
         PAYMENT,
         THERAPIST,
         THERAPIST_AVAILABILITY,
@@ -28,8 +28,8 @@ public class DAOFactory {
         switch (type) {
             case PATIENT:
                 return new PatientDAOImpl();
-            case PATIENT_PROGRAM:
-//                return new PatientProgramDAOImpl();
+            case REPORT:
+               return new ReportDAOImpl();
             case PAYMENT:
                 return new PaymentDAOImpl();
             case THERAPIST:

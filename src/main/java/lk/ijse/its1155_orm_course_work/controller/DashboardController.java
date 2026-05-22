@@ -190,5 +190,19 @@ public class DashboardController implements Initializable {
         }
     }
 
+    @FXML
+    void reportPageBtn(ActionEvent event) {
+        try {
+            mainPage.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/ReportPage.fxml"));
+            anchorPane.prefHeightProperty().bind(mainPage.heightProperty());
+            anchorPane.prefWidthProperty().bind(mainPage.widthProperty());
+            mainPage.getChildren().add(anchorPane);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
