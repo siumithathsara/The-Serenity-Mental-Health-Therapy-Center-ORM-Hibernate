@@ -90,7 +90,7 @@
 
                         <VBox spacing="10.0">
                             <children>
-                                <Button fx:id="btnProcess" maxWidth="Infinity" prefHeight="45.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Process &amp; Print Invoice" textFill="WHITE">
+                                <Button fx:id="btnProcess" maxWidth="Infinity" onAction="#handlePaymentProcess" prefHeight="45.0" style="-fx-background-color: #27AE60; -fx-background-radius: 8; -fx-cursor: hand;" text="Process &amp; Print Invoice" textFill="WHITE">
                                     <font><Font name="Segoe UI Bold" size="15.0" /></font>
                                 </Button>
                                 <Button fx:id="btnClear" maxWidth="Infinity" onAction="#handleClearPayment" prefHeight="35.0" style="-fx-background-color: #7F8C8D; -fx-background-radius: 8; -fx-cursor: hand;" text="Clear Fields" textFill="WHITE">

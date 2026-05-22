@@ -256,4 +256,13 @@ public class TherapySessionDAOImpl implements TherapySessionDAO {
             session.close();
         }
     }
+
+    public TherapySession search(String id, Session session) throws Exception {
+        return session.get(TherapySession.class, id);
+    }
+
+    public boolean update(TherapySession entity, Session session) throws Exception {
+        session.update(entity);
+        return true;
+    }
 }

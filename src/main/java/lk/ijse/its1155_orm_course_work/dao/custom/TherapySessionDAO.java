@@ -18,4 +18,6 @@ public interface TherapySessionDAO extends CrudDAO<TherapySession> {
     public List<TherapySession> getTodaySessionsByTherapist(String therapistId, Session session);
     TherapySession loadDetails(String id) throws Exception;
     List<String> getAllSessionIds() throws Exception;
+    public TherapySession search(String id, Session session) throws Exception;
+    public boolean update(TherapySession entity, Session session) throws Exception;
 }

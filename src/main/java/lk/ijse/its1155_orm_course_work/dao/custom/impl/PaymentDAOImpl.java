@@ -38,31 +38,42 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public String generateNextId() {
         Session session = FactoryConfiguration.getInstance().getSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
 
         try {
+            transaction = session.beginTransaction();
 
-            String sql = "SELECT invoiceNo FROM payment ORDER BY invoiceNo DESC LIMIT 1";
-
-            String lastId = session.createNativeQuery(sql, String.class)
+            String hql = "SELECT p.invoiceNo FROM Payment p ORDER BY p.invoiceNo DESC";
+            String lastId = session.createQuery(hql, String.class)
+                    .setMaxResults(1)
                     .uniqueResult();
 
             transaction.commit();
 
             if (lastId != null) {
-                int number = Integer.parseInt(lastId.substring(4));
-                number++;
-                return String.format("I%03d", number);
+
+                int id = Integer.parseInt(lastId.replace("I", ""));
+                return String.format("I%03d", (id + 1));
+            } else {
+                return "I001";
             }
 
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+
+            if (transaction != null && transaction.getStatus().canRollback()) {
+                transaction.rollback();
+            }
             e.printStackTrace();
+            throw e;
         } finally {
             session.close();
         }
-
-        return "I001";
     }
+
+    @Override
+    public boolean save(Payment entity, Session session) throws Exception {
+            session.save(entity);
+            return true;
+        }
 
 }
