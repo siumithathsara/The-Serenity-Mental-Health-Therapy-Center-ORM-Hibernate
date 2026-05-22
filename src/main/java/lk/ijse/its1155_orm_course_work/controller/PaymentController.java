@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDTO;
 import lk.ijse.its1155_orm_course_work.dto.PaymentDetailsDTO;
+import lk.ijse.its1155_orm_course_work.dto.tm.PaymentTM;
 import lk.ijse.its1155_orm_course_work.service.ServiceFactory;
 import lk.ijse.its1155_orm_course_work.service.custom.PaymentService;
 import lk.ijse.its1155_orm_course_work.service.custom.TherapySessionService;
@@ -22,6 +24,7 @@ public class PaymentController implements Initializable {
 
     private final PaymentService paymentService = (PaymentService) ServiceFactory.getInstance().getBO(ServiceFactory.BOType.PAYMENT);
     private final TherapySessionService sessionService = (TherapySessionService)  ServiceFactory.getInstance().getBO(ServiceFactory.BOType.THERAPY_SESSION);
+    private ObservableList<PaymentTM> paymentList = FXCollections.observableArrayList();
 
     @FXML
     private Button btnClear;
@@ -36,28 +39,28 @@ public class PaymentController implements Initializable {
     private ComboBox<String> cmbPaymentMethod1;
 
     @FXML
-    private TableColumn<?, ?> colAmount;
+    private TableColumn<PaymentTM, Double> colAmount;
 
     @FXML
-    private TableColumn<?, ?> colAppId;
+    private TableColumn<PaymentTM, String> colAppId;
 
     @FXML
-    private TableColumn<?, ?> colInvNo;
+    private TableColumn<PaymentTM, String> colInvNo;
 
     @FXML
-    private TableColumn<?, ?> colMethod;
+    private TableColumn<PaymentTM, String> colMethod;
 
     @FXML
-    private TableColumn<?, ?> colPatient;
+    private TableColumn<PaymentTM, String> colPatient;
 
     @FXML
-    private TableColumn<?, ?> colStatus;
+    private TableColumn<PaymentTM, String> colStatus;
 
     @FXML
     private AnchorPane paymentPage;
 
     @FXML
-    private TableView<?> tblPayments;
+    private TableView<PaymentTM> tblPayments;
 
     @FXML
     private TextField txtAmount;
@@ -80,12 +83,25 @@ public class PaymentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        colInvNo.setCellValueFactory(new PropertyValueFactory<>("invoiceNo"));
+        colAppId.setCellValueFactory(new PropertyValueFactory<>("appId"));
+        colPatient.setCellValueFactory(new PropertyValueFactory<>("patientName"));
+        colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        colMethod.setCellValueFactory(new PropertyValueFactory<>("method"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
         cmbPaymentMethod1.setItems(FXCollections.observableArrayList("Cash", "Card", "Online"));
         loadAllSessionIds();
         txtDate.setText(LocalDate.now().toString());
         txtDate.setEditable(false);
         generatePaymentId();
         clearFields();
+        loadPaymentTable();
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchPatientPayments(newValue);
+        });
     }
 
     public void setAppointmentId(String appointmentId) {
@@ -214,7 +230,7 @@ public class PaymentController implements Initializable {
 
             if (isSuccess) {
                 new Alert(Alert.AlertType.INFORMATION, "Payment success").show();
-
+                loadPaymentTable();
                 clearFields();
                 generatePaymentId();
 
@@ -226,5 +242,54 @@ public class PaymentController implements Initializable {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
+    private void loadPaymentTable(){
+        paymentList.clear();
+        try {
+            List<PaymentDTO> allPayments = paymentService.getAllPayments();
+
+            for (PaymentDTO dto : allPayments) {
+
+                String appointmentId = dto.getAppointmentId();
+                String patientName = dto.getPatientName();
+
+                PaymentTM tm = new PaymentTM(
+                        dto.getInvoiceNo(),
+                        appointmentId,
+                        patientName,
+                        dto.getAmount(),
+                        dto.getMethod(),
+                        "Paid"
+                );
+                paymentList.add(tm);
+            }
+
+            tblPayments.setItems(paymentList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void searchPatientPayments(String searchText) {
+
+        if (searchText == null || searchText.trim().isEmpty()) {
+            tblPayments.setItems(paymentList);
+            return;
+        }
+        String lowerCaseFilter = searchText.toLowerCase().trim();
+
+        ObservableList<PaymentTM> filteredList = FXCollections.observableArrayList();
+
+        for (PaymentTM payment : paymentList) {
+
+            if (payment.getPatientName() != null && payment.getPatientName().toLowerCase().contains(lowerCaseFilter)) {
+                filteredList.add(payment);
+            }
+        }
+
+        tblPayments.setItems(filteredList);
+    }
+
 
 }

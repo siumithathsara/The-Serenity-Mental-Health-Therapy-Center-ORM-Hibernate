@@ -13,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaymentServiceImpl implements PaymentService {
     private final TherapySessionDAO therapySessionDAO =(TherapySessionDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOType.THERAPY_SESSION);
@@ -65,6 +67,31 @@ public class PaymentServiceImpl implements PaymentService {
         } finally {
             session.close();
         }
+    }
+
+    @Override
+    public List<PaymentDTO> getAllPayments() throws PaymentProcessingException {
+        List<Payment> paymentList = paymentDAO.getAllPayments();
+        List<PaymentDTO> dtoList = new ArrayList<>();
+
+        for (Payment payment : paymentList) {
+            PaymentDTO dto = new PaymentDTO();
+            dto.setInvoiceNo(payment.getInvoiceNo());
+            dto.setAmount(payment.getAmount());
+            dto.setMethod(payment.getMethod());
+            dto.setDate(payment.getDate());
+
+            // 🌟 Entity එකෙන් values අරන් DTO එකේ String fields වලට දානවා
+            if (payment.getTherapySession() != null) {
+                dto.setAppointmentId(payment.getTherapySession().getAppointmentId());
+                if (payment.getTherapySession().getPatient() != null) {
+                    dto.setPatientName(payment.getTherapySession().getPatient().getName());
+                }
+            }
+
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
 }

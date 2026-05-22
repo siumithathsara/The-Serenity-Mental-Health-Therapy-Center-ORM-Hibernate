@@ -5,10 +5,13 @@ import lk.ijse.its1155_orm_course_work.exception.PaymentProcessingException;
 import lk.ijse.its1155_orm_course_work.service.SuperService;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface PaymentService extends SuperService {
 
     String generateNextPaymentId() throws PaymentProcessingException , SQLException ;
 
     boolean savePaymentAndConfirmSession(PaymentDTO paymentDTO)throws PaymentProcessingException;
+
+    List<PaymentDTO> getAllPayments() throws PaymentProcessingException;
 }

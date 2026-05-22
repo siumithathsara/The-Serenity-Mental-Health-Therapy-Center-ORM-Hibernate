@@ -1,5 +1,6 @@
 package lk.ijse.its1155_orm_course_work.dto;
 
+import lk.ijse.its1155_orm_course_work.entity.TherapySession;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,4 +16,8 @@ public class PaymentDTO {
     private String method;
     private String status;
     private String sessionId;
+
+    private String appointmentId;
+    private String patientName;
+    private TherapySession therapySession;
 }

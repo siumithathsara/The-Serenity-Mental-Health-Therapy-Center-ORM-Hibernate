@@ -3,6 +3,7 @@ package lk.ijse.its1155_orm_course_work.dao.custom.impl;
 import lk.ijse.its1155_orm_course_work.config.FactoryConfiguration;
 import lk.ijse.its1155_orm_course_work.dao.custom.PaymentDAO;
 import lk.ijse.its1155_orm_course_work.entity.Payment;
+import lk.ijse.its1155_orm_course_work.exception.PaymentProcessingException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -75,5 +76,24 @@ public class PaymentDAOImpl implements PaymentDAO {
             session.save(entity);
             return true;
         }
+
+    @Override
+    public List<Payment> getAllPayments() throws PaymentProcessingException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+
+            String hql = "SELECT p FROM Payment p " +
+                    "JOIN FETCH p.therapySession s " +
+                    "JOIN FETCH s.patient pt " +
+                    "ORDER BY p.invoiceNo DESC";
+
+            return session.createQuery(hql, Payment.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 
 }
